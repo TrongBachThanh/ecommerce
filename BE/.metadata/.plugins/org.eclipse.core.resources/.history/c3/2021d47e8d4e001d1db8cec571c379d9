@@ -1,0 +1,5 @@
+package com.ecommerce.demo.services;
+
+public interface RoleService {
+
+}
