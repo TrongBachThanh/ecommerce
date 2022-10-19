@@ -1,5 +1,0 @@
-package com.ecommerce.demo.repositories;
-
-public interface RoleRepository {
-
-}

@@ -1,5 +1,0 @@
-package com.ecommerce.demo.constants;
-
-public enum EOderStatus {
-
-}
