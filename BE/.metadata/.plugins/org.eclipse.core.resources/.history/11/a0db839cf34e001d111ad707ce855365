@@ -1,0 +1,19 @@
+package com.ecommerce.demo.data.entities;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "brand")
+public class BrandEntity extends BaseEntity {
+
+	@Column
+	private String name;
+
+	@Column
+	private String code;
+
+	@Column
+	private String logo;
+}

@@ -1,0 +1,29 @@
+package com.ecommerce.demo.data.entities;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="order")
+public class OrderEntity extends BaseEntity{
+	@Column(name="order-date")
+	private Date orderDate;
+	
+	@Column(name="delivery-date")
+	private Date deliveryDate;
+	
+	@Column(name="sum")
+	private Double sum;
+	
+	@Column(name="note")
+	private String note;
+	
+	@Column(name="ship")
+	private Double ship;
+	
+	
+	
+}

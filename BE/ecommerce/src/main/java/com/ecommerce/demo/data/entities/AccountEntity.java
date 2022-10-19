@@ -6,9 +6,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -19,20 +16,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "account")
-public class AccountEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class AccountEntity extends BaseEntity {
 
-	@Column(name = "fullname", unique = true)
+	@Column(name = "fullname")
 
 	private String fullname;
 
-	@Column(name = "username", unique = true)
-
+	@Column(name = "username")
 	private String username;
 
-	@Column(name = "email", unique = true)
+	@Column(name = "email")
 	private String email;
 
 	@Column(name = "password")
@@ -40,14 +33,6 @@ public class AccountEntity {
 
 	@Column(name = "phone")
 	private String phone;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getFullname() {
 		return fullname;

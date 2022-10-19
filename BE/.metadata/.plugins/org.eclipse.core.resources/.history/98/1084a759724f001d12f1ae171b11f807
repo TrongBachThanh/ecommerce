@@ -1,0 +1,17 @@
+package com.ecommerce.demo.services;
+
+import java.util.List;
+
+import com.ecommerce.demo.data.entities.AccountEntity;
+import com.ecommerce.demo.dto.request.AccountUpdateDto;
+import com.ecommerce.demo.dto.response.AccountResponseDto;
+
+public interface AccountService {
+	public List<AccountEntity> getAllAccounts();
+	public AccountResponseDto getAccountById(Long id);
+	
+	public AccountResponseDto createAccount(AccountUpdateDto dto);
+	
+	public AccountResponseDto updateAccount(Long id, AccountUpdateDto dto);
+
+}

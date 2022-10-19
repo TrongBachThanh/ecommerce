@@ -1,0 +1,5 @@
+package com.ecommerce.demo.data.entities;
+
+public class OrderEntity {
+
+}

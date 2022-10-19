@@ -4,9 +4,10 @@ package com.ecommerce.demo.dto.response;
 public class AccountResponseDto {
 	private Long id;
 	private String fullname;
-	private String username;
 	private String email;
 	private String phone;
+	private String username;
+
 	public Long getId() {
 		return id;
 	}
@@ -19,12 +20,6 @@ public class AccountResponseDto {
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -36,6 +31,12 @@ public class AccountResponseDto {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 
