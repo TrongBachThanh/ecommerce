@@ -23,6 +23,8 @@ public class RoleEntity extends BaseEntity{
 	public void setRole(ERole role) {
 		this.role = role;
 	}
+
+	
 	
 	
 }

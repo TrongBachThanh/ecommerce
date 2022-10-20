@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 public class AccountUpdateDto {
 	
-	@NotBlank(message = "Fullname is required")
+	@NotBlank(message = "Fullname is required.")
 	private String fullname;
 	
 	@NotBlank(message = "Email is required")
@@ -13,7 +13,7 @@ public class AccountUpdateDto {
 	@NotBlank(message = "Phone is required")
 	private String phone;
 	
-//	@NotBlank(message = "Username is required")
+	@NotBlank(message = "Username is required")
 	private String username;
 
 	public String getFullname() {

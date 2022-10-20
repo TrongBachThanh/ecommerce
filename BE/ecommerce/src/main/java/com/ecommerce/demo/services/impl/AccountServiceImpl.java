@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.demo.data.entities.AccountEntity;
 import com.ecommerce.demo.dto.request.AccountUpdateDto;
 import com.ecommerce.demo.dto.response.AccountResponseDto;
+import com.ecommerce.demo.exceptions.ResourceFoundException;
 import com.ecommerce.demo.repositories.AccountRepository;
 import com.ecommerce.demo.services.AccountService;
 
@@ -33,10 +34,10 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountResponseDto getAccountById(Long id) {
 		Optional<AccountEntity> accountOptional = this.accountRepository.findById(id);
-		if (accountOptional.isPresent()) {
-			return modelMapper.map(accountOptional, AccountResponseDto.class);
+		if (accountOptional.isEmpty()) {
+			throw new IllegalArgumentException("Account Not Found IllegalArgumentException");
 		}
-		return null;
+		return modelMapper.map(accountOptional, AccountResponseDto.class);
 	}
 
 	@Override
@@ -49,6 +50,9 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AccountResponseDto updateAccount(Long id, AccountUpdateDto dto) {
 		Optional<AccountEntity> accountOptinal = this.accountRepository.findById(id);
+		if(accountOptinal.isEmpty()) {
+			throw new ResourceFoundException("Account Not Found");
+		}
 		AccountEntity account = accountOptinal.get();
 		modelMapper.map(dto, account);
 		account = this.accountRepository.save(account);
