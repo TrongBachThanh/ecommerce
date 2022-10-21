@@ -61,6 +61,12 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void deleteAccount(Long id) {
-		
+		Optional<AccountEntity> accountOptinal = this.accountRepository.findById(id);
+		if(accountOptinal.isEmpty()) {
+			throw new ResourceFoundException("Account Not Found");
+		}
+		AccountEntity account = accountOptinal.get();
+		account.setIsActive(true);
+		this.accountRepository.save(account);
 	}
 }

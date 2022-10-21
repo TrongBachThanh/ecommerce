@@ -6,6 +6,7 @@ public class AccountResponseDto {
 	private String email;
 	private String phone;
 	private String username;
+	
 
 	public Long getId() {
 		return id;

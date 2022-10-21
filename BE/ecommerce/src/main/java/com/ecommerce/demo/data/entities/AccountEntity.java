@@ -11,9 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 @Entity
 @Table(name = "account")
 public class AccountEntity extends BaseEntity {
@@ -33,6 +30,16 @@ public class AccountEntity extends BaseEntity {
 
 	@Column(name = "phone")
 	private String phone;
+
+	@Column(name = "address")
+	private String address;
+
+	@Column(name = "is_active")
+	private Boolean isActive;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<RoleEntity> role = new HashSet<>();
 
 	public String getFullname() {
 		return fullname;
@@ -97,15 +104,5 @@ public class AccountEntity extends BaseEntity {
 	public void setRole(Set<RoleEntity> role) {
 		this.role = role;
 	}
-
-	@Column(name = "address")
-	private String address;
-
-	@Column(name = "is_active")
-	private Boolean isActive;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<RoleEntity> role = new HashSet<>();
 
 }

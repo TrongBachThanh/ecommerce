@@ -12,18 +12,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "brand")
 public class BrandEntity extends BaseEntity {
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
 
-	@Column(name="code")
+	@Column(name = "code")
 	private String code;
 
-	@Column(name="logo")
+	@Column(name = "logo")
 	private String logo;
-	
-	@OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
+	@OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ProductEntity> products;
 
 	public String getName() {
@@ -49,6 +48,5 @@ public class BrandEntity extends BaseEntity {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
-	
-	
+
 }

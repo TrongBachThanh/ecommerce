@@ -1,9 +1,15 @@
 package com.ecommerce.demo.services;
 
-import java.util.List;
-
 import com.ecommerce.demo.data.entities.RoleEntity;
+import com.ecommerce.demo.dto.response.RoleResponseDto;
 
 public interface RoleService {
-	public List<RoleEntity> getAllRoles();
+	
+	public RoleResponseDto getRoleById(Long id);
+	
+	public RoleResponseDto createRole(RoleEntity role);
+	
+	public RoleResponseDto updateRole(RoleEntity role, Long id);
+	
+	public void deleteRole(Long id);
 }
