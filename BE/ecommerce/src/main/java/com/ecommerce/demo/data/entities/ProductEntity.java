@@ -11,6 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "product")
 public class ProductEntity extends BaseEntity {
@@ -36,16 +43,21 @@ public class ProductEntity extends BaseEntity {
 	@Column(name = "thumbnail")
 	private String thumbnail;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="brand_id")
 	private BrandEntity brand;
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
 	private List<ProductImageEntity> productImages;
 	
+	@OneToMany(mappedBy = "product")
+	private List<RatingEntity> ratings;
+	
+	@OneToMany(mappedBy = "product")
+	private List<ColorEntity> colors;
 	
 }

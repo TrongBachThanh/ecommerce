@@ -30,18 +30,24 @@ public class BrandServiceImpl implements BrandService {
 	public BrandResponseDto createBrand(BrandUpdateDto dto) {
 		BrandEntity brand = modelMapper.map(dto, BrandEntity.class);
 		BrandEntity savedBrand = brandRepository.save(brand);
-		
+
 		return modelMapper.map(savedBrand, BrandResponseDto.class);
 	}
 
 	@Override
 	public BrandResponseDto updateBrand(BrandUpdateDto dto, Long id) {
 		Optional<BrandEntity> brandOptinal = brandRepository.findById(id);
-		if(brandOptinal.isEmpty()) {
+
+		if (brandOptinal.isEmpty()) {
 			throw new ResourceFoundException("Brand Not Found");
 		}
-		
-		return null;
+
+		BrandEntity brand = brandOptinal.get();
+		modelMapper.map(dto, brand);
+
+		brand = brandRepository.save(brand);
+
+		return modelMapper.map(brand, BrandResponseDto.class);
 	}
 
 	@Override
