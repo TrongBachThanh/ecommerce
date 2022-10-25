@@ -4,6 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "slider")
 public class SliderEntity extends BaseEntity {
@@ -13,13 +20,5 @@ public class SliderEntity extends BaseEntity {
 
 	@Column(name = "product_link")
 	private String productLink;
-
-	public String getImageLink() {
-		return imageLink;
-	}
-
-	public void setProductLink(String productLink) {
-		this.productLink = productLink;
-	}
 
 }

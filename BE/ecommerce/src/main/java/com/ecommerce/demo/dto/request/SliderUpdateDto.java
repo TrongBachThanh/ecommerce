@@ -1,32 +1,15 @@
 package com.ecommerce.demo.dto.request;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class SliderUpdateDto {
 	private Long id;
 	private String imageLink;
 	private String productLink;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getImageLink() {
-		return imageLink;
-	}
-
-	public void setImageLink(String imageLink) {
-		this.imageLink = imageLink;
-	}
-
-	public String getProductLink() {
-		return productLink;
-	}
-
-	public void setProductLink(String productLink) {
-		this.productLink = productLink;
-	}
 
 }

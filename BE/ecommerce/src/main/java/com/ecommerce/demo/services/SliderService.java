@@ -8,7 +8,7 @@ public interface SliderService {
 
 	public SliderResponseDto createSlider(SliderUpdateDto dto);
 
-	public SliderResponseDto updateSlider(SliderUpdateDto dto);
+	public SliderResponseDto updateSlider(SliderUpdateDto dto, Long id);
 
 	public void deleteSlider(Long id);
 }
