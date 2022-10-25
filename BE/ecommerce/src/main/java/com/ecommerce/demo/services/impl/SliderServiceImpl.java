@@ -53,6 +53,7 @@ public class SliderServiceImpl implements SliderService {
 		}
 
 		SliderEntity slider = sliderOptinal.get();
+		dto.setId(id);
 		modelMapper.map(dto, slider);
 		slider = sliderRepository.save(slider);
 
