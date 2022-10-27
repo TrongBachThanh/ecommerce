@@ -14,7 +14,7 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    const registerUser = (e) => {
+    const loginUser = (e) => {
         e.preventDefault();
 
         if (password !== cPassword) {
@@ -22,7 +22,7 @@ const Register = () => {
         }
         setIsLoading(true);
         setTimeout(() => {
-            // Handle register
+            // Handle login
             setIsLoading(false);
             navigate("/login");
         }, 2000)
@@ -37,7 +37,7 @@ const Register = () => {
                     <div className={styles.form}>
                         <h2>Register</h2>
 
-                        <form onSubmit={registerUser}>
+                        <form onSubmit={loginUser}>
                             <input type="text" placeholder="Username" required value={username}
                                 onChange={(e) => setUsername(e.target.value)} />
 
