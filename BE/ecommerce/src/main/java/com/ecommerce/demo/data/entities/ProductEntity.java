@@ -2,7 +2,6 @@ package com.ecommerce.demo.data.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,18 +45,18 @@ public class ProductEntity extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private CategoryEntity category;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="brand_id")
+	@JoinColumn(name = "brand_id")
 	private BrandEntity brand;
-	
-	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY )
+
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 	private List<ProductImageEntity> productImages;
-	
+
 	@OneToMany(mappedBy = "product")
 	private List<RatingEntity> ratings;
-	
+
 	@OneToMany(mappedBy = "product")
 	private List<ColorEntity> colors;
-	
+
 }

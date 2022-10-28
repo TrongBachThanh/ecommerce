@@ -16,4 +16,11 @@ public interface ProductService {
 	public ProductResponseDto updateProduct(ProductUpdateDto dto, Long id);
 
 	public void deleteProduct(Long id);
+	
+	public List<ProductResponseDto> getProductByCategoryId(Long id);
+	
+	public List<ProductResponseDto> getProductByIsNew(boolean isNew);
+	
+	public List<ProductResponseDto> getProductByIsFeatured(boolean isFeatured);
+
 }
