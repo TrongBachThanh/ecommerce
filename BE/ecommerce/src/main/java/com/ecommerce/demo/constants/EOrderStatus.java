@@ -1,9 +1,8 @@
 package com.ecommerce.demo.constants;
 
 public enum EOrderStatus {
-	DANG_CHO_XU_LY,
-	DANG_XU_LY,
-	DANG_GIAO_HANG,
-	HUY,
-	DA_GIAO
+	CHECKING,
+    SHIPPING,
+    DONE,
+    CANCELED
 }

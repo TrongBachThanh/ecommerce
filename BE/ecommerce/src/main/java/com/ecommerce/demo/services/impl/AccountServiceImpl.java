@@ -5,11 +5,15 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.demo.constants.ERole;
 import com.ecommerce.demo.data.entities.AccountEntity;
 import com.ecommerce.demo.dto.request.AccountUpdateDto;
 import com.ecommerce.demo.dto.response.AccountResponseDto;
+import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
 import com.ecommerce.demo.repositories.AccountRepository;
 import com.ecommerce.demo.services.AccountService;
@@ -42,15 +46,30 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public AccountResponseDto createAccount(AccountUpdateDto dto) {
+
+		Optional<AccountEntity> accountOptional = accountRepository.findByUsername(dto.getUsername());
+
+		if (accountOptional.isPresent()) {
+			throw new ItemExistException("Username is already signed up");
+		}
+
 		AccountEntity account = modelMapper.map(dto, AccountEntity.class);
+
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		account.setPassword(encoder.encode(account.getPassword()));
+		account.setRoleId(ERole.ROLE_USER);
+
+		account.setIsActive(true);
+
 		AccountEntity savedAccount = accountRepository.save(account);
+		
 		return modelMapper.map(savedAccount, AccountResponseDto.class);
 	}
 
 	@Override
 	public AccountResponseDto updateAccount(Long id, AccountUpdateDto dto) {
 		Optional<AccountEntity> accountOptinal = this.accountRepository.findById(id);
-		if(accountOptinal.isEmpty()) {
+		if (accountOptinal.isEmpty()) {
 			throw new ResourceFoundException("Account Not Found");
 		}
 		AccountEntity account = accountOptinal.get();
@@ -62,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public void deleteAccount(Long id) {
 		Optional<AccountEntity> accountOptinal = this.accountRepository.findById(id);
-		if(accountOptinal.isEmpty()) {
+		if (accountOptinal.isEmpty()) {
 			throw new ResourceFoundException("Account Not Found");
 		}
 		AccountEntity account = accountOptinal.get();

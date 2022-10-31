@@ -6,12 +6,16 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.ecommerce.demo.constants.ERole;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,6 +49,11 @@ public class AccountEntity extends BaseEntity {
 
 	@Column(name = "is_active")
 	private Boolean isActive;
+	
+	@Enumerated(EnumType.ORDINAL)
+    @Column(name = "role_id")    
+    private ERole roleId;
+
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
