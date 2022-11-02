@@ -14,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.ecommerce.demo.dto.response.ErrorResponse;
+import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
 
 @ControllerAdvice
@@ -24,6 +25,14 @@ public class GlobalExceptionsHandler extends ResponseEntityExceptionHandler{
 		ErrorResponse error = new ErrorResponse("01", exception.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler({ItemExistException.class})
+	protected ResponseEntity<ErrorResponse> handleItemExistException(RuntimeException exception,
+			WebRequest request) {
+		ErrorResponse error = new ErrorResponse("03", exception.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
+	}
+	
 	
 
 	@ExceptionHandler({ IllegalArgumentException.class })

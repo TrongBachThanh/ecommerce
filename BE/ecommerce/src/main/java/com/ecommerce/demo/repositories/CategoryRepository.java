@@ -6,4 +6,6 @@ import com.ecommerce.demo.data.entities.CategoryEntity;
 
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long>{
 
+	boolean existsByName(String name);
+
 }

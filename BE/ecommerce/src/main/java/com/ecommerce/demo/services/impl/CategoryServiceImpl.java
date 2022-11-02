@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.demo.data.entities.CategoryEntity;
 import com.ecommerce.demo.dto.request.CategoryUpdateDto;
 import com.ecommerce.demo.dto.response.CategoryResponseDto;
+import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
 import com.ecommerce.demo.repositories.CategoryRepository;
 import com.ecommerce.demo.services.CategoryService;
@@ -49,6 +50,11 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryResponseDto createCategory(CategoryUpdateDto dto) {
+
+		if (categoryRepository.existsByName(dto.getName())) {
+			throw new ItemExistException("Category Name Has Exist");
+		}
+
 		CategoryEntity category = modelMapper.map(dto, CategoryEntity.class);
 
 		CategoryEntity savedCategory = categoryRepository.save(category);
@@ -67,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
 		dto.setId(id);
 
 		modelMapper.map(dto, category);
-		
+
 		category = categoryRepository.save(category);
 
 		return modelMapper.map(category, CategoryResponseDto.class);
