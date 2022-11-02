@@ -5,8 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react"
 import Loader from "../../components/loader/Loader";
 
+import axios from 'axios'
+import Cookies from 'universal-cookie'
+
 
 const Register = () => {
+    const [fullname, setFullname] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [cPassword, setCPassword] = useState("");
@@ -14,18 +20,24 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    const loginUser = (e) => {
+    const registerUser = async (e) => {
         e.preventDefault();
 
         if (password !== cPassword) {
             alert("Password does not match!")
         }
+
+        let registerObj = { fullname, email, username, phone, password };
+
         setIsLoading(true);
-        setTimeout(() => {
-            // Handle login
-            setIsLoading(false);
-            navigate("/login");
-        }, 2000)
+
+        await axios.post("http://localhost:8080/customer/register", registerObj)
+            .then((res) => {
+                console.log(res)
+            })
+
+        setIsLoading(false);
+        navigate("/");
 
     }
 
@@ -37,7 +49,16 @@ const Register = () => {
                     <div className={styles.form}>
                         <h2>Register</h2>
 
-                        <form onSubmit={loginUser}>
+                        <form onSubmit={registerUser}>
+                            <input type="text" placeholder="Fullname" value={fullname}
+                                onChange={(e) => setFullname(e.target.value)} />
+
+                            <input type="text" placeholder="Email" required value={email}
+                                onChange={(e) => setEmail(e.target.value)} />
+
+                            <input type="text" placeholder="Phone" required value={phone}
+                                onChange={(e) => setPhone(e.target.value)} />
+
                             <input type="text" placeholder="Username" required value={username}
                                 onChange={(e) => setUsername(e.target.value)} />
 

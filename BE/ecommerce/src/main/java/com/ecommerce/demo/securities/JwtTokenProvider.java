@@ -14,7 +14,7 @@ public class JwtTokenProvider {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-	private final String jwtSecret = "123";
+	private final String jwtSecret = "123fglkflkglfkglkflgkflg";
 
 	private final long expiresTime = 12 * 60 * 60 * 1000;;
 

@@ -3,6 +3,7 @@ package com.ecommerce.demo.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.ecommerce.demo.dto.response.AccountResponseDto;
 import com.ecommerce.demo.services.AccountService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/customer/register")
 public class RegisterController {
 	private AccountService accountService;

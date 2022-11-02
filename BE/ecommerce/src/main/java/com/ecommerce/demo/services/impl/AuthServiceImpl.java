@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
 
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ResponseEntity<ResponseDto> login(LoginInputDto dto) {
 		String username = dto.getUsername();
@@ -64,10 +64,11 @@ public class AuthServiceImpl implements AuthService {
 
 		AccountEntity account = accountOptional.get();
 
-		  PasswordEncoder encoder = new BCryptPasswordEncoder();
-	        if (!encoder.matches(dto.getPassword(), account.getPassword())){
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(null, "Invalid Username or password!","400"));
-	        }
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if (!encoder.matches(dto.getPassword(), account.getPassword())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new ResponseDto(null, "Invalid Username or password!", "400"));
+		}
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 				account.getUsername(), account.getPassword());

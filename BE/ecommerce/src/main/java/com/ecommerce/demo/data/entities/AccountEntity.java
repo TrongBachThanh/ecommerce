@@ -29,7 +29,6 @@ import lombok.Setter;
 public class AccountEntity extends BaseEntity {
 
 	@Column(name = "fullname")
-
 	private String fullname;
 
 	@Column(name = "username")
@@ -49,16 +48,15 @@ public class AccountEntity extends BaseEntity {
 
 	@Column(name = "is_active")
 	private Boolean isActive;
-	
-	@Enumerated(EnumType.ORDINAL)
-    @Column(name = "role_id")    
-    private ERole roleId;
 
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "role_id")
+	private ERole roleId;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<RoleEntity> role = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "account")
 	private List<RatingEntity> ratings;
 

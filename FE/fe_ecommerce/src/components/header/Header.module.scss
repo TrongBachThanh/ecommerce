@@ -11,6 +11,10 @@ header {
   background-color: var(--dark-blue);
   color: #fff;
 
+  a {
+    text-decoration: none;
+  }
+
   .header {
     width: 100%;
     height: 8rem;

@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import Card from '../../components/card/Card'
 import Loader from '../../components/loader/Loader'
 
-
+import axios from 'axios'
+import Cookies from 'universal-cookie'
 
 
 const Login = () => {
@@ -15,15 +16,29 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
-    const registerUser = (e) => {
+    const loginUser = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setTimeout(() => {
-            // Handle login
-            setIsLoading(false);
-            navigate("/");
-        }, 2000)
+
+        let login = { username, password };
+
+        await axios.post("http://localhost:8080/customer/login", login)
+            .then((res) => {
+                cookies.set('name', res.data.data.name, { path: '/' })
+                cookies.set('customerId', res.data.data.customerId, { path: '/' })
+                cookies.set('role', res.data.data.role, { path: '/' })
+                cookies.set('token', res.data.data.token, { path: '/' })
+            })
+            .catch((err) => {
+                alert("Username or password is wrong")
+            })
+
+        setIsLoading(false);
+        alert("Login success!")
+        navigate("/");
+
 
     }
 
@@ -39,7 +54,7 @@ const Login = () => {
                 <Card>
                     <div className={styles.form}>
                         <h2 className='--color-orange'>Login</h2>
-                        <form onSubmit={registerUser}>
+                        <form onSubmit={loginUser}>
                             <input type="text" placeholder='Username' required value={username}
                                 onChange={(e) => setUsername(e.target.value)} />
                             <input type="password" placeholder='Password' required value={password}

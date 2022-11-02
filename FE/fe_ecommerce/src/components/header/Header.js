@@ -69,8 +69,9 @@ const Header = () => {
           </ul>
           <div className={styles["header-right"]} onClick={hideMenu}>
             <span className={styles.links}>
+
               <NavLink to="/login" className={activeLink}>Login</NavLink>
-              <NavLink to="/register" className={activeLink} >Register</NavLink>
+              {/* <NavLink to="/register" className={activeLink} >Register</NavLink> */}
             </span>
             {cart}
           </div>

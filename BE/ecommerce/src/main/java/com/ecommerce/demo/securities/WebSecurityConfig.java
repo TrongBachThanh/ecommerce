@@ -54,13 +54,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// httpSecurity.authorizeRequests().antMatchers("/").permitAll();
 		httpSecurity.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(jwtEntryPointJwt).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers(PUT, "/products").hasAnyAuthority("ROLE_ADMIN")
+				.antMatchers(DELETE, "/products").hasAnyAuthority("ROLE_ADMIN")
+				.antMatchers(POST, "/products").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers("/customer/**").permitAll()
-				.antMatchers("/product/**").permitAll()
+				.antMatchers("/products/**").permitAll()
 				.antMatchers("/category/**").permitAll()
 				.antMatchers("/order/**").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers(POST, "/product", "/category").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers(PUT, "/product", "/category").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers(DELETE, "/product", "/category").hasAnyAuthority("ROLE_ADMIN").anyRequest()
+				.anyRequest()
 				.authenticated();
 		httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}

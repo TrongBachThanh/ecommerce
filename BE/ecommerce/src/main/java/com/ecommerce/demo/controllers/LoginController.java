@@ -24,7 +24,8 @@ public class LoginController {
     LoginController(AuthService authService){
         this.authService=authService;
     }
-    @PostMapping
+    @SuppressWarnings("rawtypes")
+	@PostMapping
     public ResponseEntity<ResponseDto> login (@Valid @RequestBody LoginInputDto dto) {
     return authService.login(dto);
     }
