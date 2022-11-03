@@ -1,6 +1,7 @@
 package com.ecommerce.demo.services.impl;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -129,6 +130,41 @@ public class CategoryServiceImplTest {
 
 		assertThat(expected, is(actual));
 	}
+	
+	@Test
+	void updateCategory_ResourceFoundException_WhenIdInvalid() {
+		when(categoryRepository.findById(2l)).thenReturn(Optional.empty());
+		
+		ResourceFoundException actual = Assertions.assertThrows(ResourceFoundException.class, () -> {
+			categoryServiceImpl.updateCategory(categoryUpdateDto, 2l);
+		});
+		
+		Assertions.assertEquals("Category Not Found", actual.getMessage());
+
+	}
+	
+	@Test
+	void updateCategory_ShouldReturnCategoryResponseDto_WhenDatavalid() {
+		
+		CategoryUpdateDto dto = mock(CategoryUpdateDto.class);
+		CategoryResponseDto expected = mock(CategoryResponseDto.class);
+		
+		when(categoryRepository.findById(2l)).thenReturn(Optional.of(category));
+		
+		when(categoryRepository.save(category)).thenReturn(category);
+		
+		when(modelMapper.map(category, CategoryResponseDto.class)).thenReturn(expected);
+		
+		CategoryResponseDto actual = categoryServiceImpl.updateCategory(dto, 2l);
+		
+		verify(dto).setId(2l);
+		verify(modelMapper).map(dto, category);
+		
+		assertThat(expected, is(actual));
+
+		
+	}
+	
 	
 	
 
