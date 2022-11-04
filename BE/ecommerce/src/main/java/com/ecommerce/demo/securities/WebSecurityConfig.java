@@ -50,17 +50,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// httpSecurity.authorizeRequests().antMatchers("/customer/login").permitAll();
-		// httpSecurity.authorizeRequests().antMatchers("/").permitAll();
 		httpSecurity.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(jwtEntryPointJwt).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers(PUT, "/products").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers(DELETE, "/products").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers(POST, "/products").hasAnyAuthority("ROLE_ADMIN")
+				.antMatchers("/order/**").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers("/customer/**").permitAll()
 				.antMatchers("/products/**").permitAll()
 				.antMatchers("/categories/**").permitAll()
-				.antMatchers("/order/**").hasAnyAuthority("ROLE_ADMIN")
+				.antMatchers("/login").permitAll()
 				.anyRequest()
 				.authenticated();
 		httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

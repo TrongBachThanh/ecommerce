@@ -73,6 +73,7 @@ public class AuthServiceImpl implements AuthService {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 				account.getUsername(), account.getPassword());
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
 		UserDetails userDetails = loadUserByUsername(account.getUsername());
 		String jwt = jwtTokenProvider.generateJwtToken(userDetails);
 		Date expriredDate = jwtTokenProvider.getExpirationDate(jwt);

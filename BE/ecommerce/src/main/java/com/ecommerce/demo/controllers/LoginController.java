@@ -16,7 +16,7 @@ import com.ecommerce.demo.services.AuthService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/customer/login")
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     private AuthService authService;

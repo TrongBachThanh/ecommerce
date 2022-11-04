@@ -1,5 +1,7 @@
 package com.ecommerce.demo.dto.request;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,5 +18,9 @@ public class ProductUpdateDto {
 	private boolean isNew;
 	private Double price;
 	private String thumbnail;
-
+	
+	private String categoryCode;
+	private List<String> images;
+	
+	
 }

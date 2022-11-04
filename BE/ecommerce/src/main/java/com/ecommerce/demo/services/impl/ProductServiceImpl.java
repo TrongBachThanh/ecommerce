@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.data.entities.CategoryEntity;
 import com.ecommerce.demo.data.entities.ProductEntity;
+import com.ecommerce.demo.data.entities.ProductImageEntity;
 import com.ecommerce.demo.dto.request.ProductUpdateDto;
 import com.ecommerce.demo.dto.response.ProductResponseDto;
+import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
+import com.ecommerce.demo.mappers.ProductMapper;
 import com.ecommerce.demo.repositories.CategoryRepository;
 import com.ecommerce.demo.repositories.ProductRepository;
 import com.ecommerce.demo.services.ProductService;
@@ -23,13 +26,15 @@ public class ProductServiceImpl implements ProductService {
 	ProductRepository productRepository;
 	CategoryRepository categoryRepository;
 	ModelMapper modelMapper;
+	ProductMapper productMapper;
 
 	@Autowired
 	public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper,
-			CategoryRepository categoryRepository) {
+			CategoryRepository categoryRepository, ProductMapper productMapper) {
 		this.productRepository = productRepository;
 		this.modelMapper = modelMapper;
 		this.categoryRepository = categoryRepository;
+		this.productMapper = productMapper;
 	}
 
 	@Override
@@ -47,8 +52,33 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ProductResponseDto createProduct(ProductUpdateDto dto) {
-		ProductEntity product = modelMapper.map(dto, ProductEntity.class);
+
+		if (productRepository.findByName(dto.getName()).isPresent()) {
+			throw new ItemExistException("Product Name has exist");
+		}
+
+		Optional<CategoryEntity> categoryOptional = categoryRepository.findByCode(dto.getCategoryCode());
+		if (categoryOptional.isEmpty()) {
+			throw new ResourceFoundException("Category Not Found");
+		}
+		CategoryEntity category = categoryOptional.get();
+
+		ProductEntity product = productMapper.toDtoEntity(dto);
+		product.setCategory(category);
+		
+		List<ProductImageEntity> imageList = new ArrayList<>();
+		
+		for(String url : dto.getImages()) {
+			ProductImageEntity image = new ProductImageEntity();
+			image.setFile(url);
+			imageList.add(image);
+		}
+		
+		product.setProductImages(imageList);
+		
 		ProductEntity savedProduct = productRepository.save(product);
+		
+		
 		return modelMapper.map(savedProduct, ProductResponseDto.class);
 	}
 

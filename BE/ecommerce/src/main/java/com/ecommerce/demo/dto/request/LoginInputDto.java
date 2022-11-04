@@ -13,7 +13,7 @@ public class LoginInputDto {
 	@NotBlank(message = "Username is required")
 	private String username;
 
-	@Size(min = 3, message = "Password must be at least 6 characters")
+	@Size(min = 3, message = "Password must be at least 3 characters")
 	@NotBlank(message = "Password is required")
 	private String password;
 }
