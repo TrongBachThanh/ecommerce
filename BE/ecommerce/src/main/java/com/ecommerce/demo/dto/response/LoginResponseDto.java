@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponseDto {
-	private String name;
-	private Long customerId;
+	private String username;
+	private String fullName;
 	private ERole role;
 	private String token;
 	private Date expirationTimestamp;

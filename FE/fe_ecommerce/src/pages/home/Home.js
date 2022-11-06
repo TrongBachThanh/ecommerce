@@ -7,27 +7,28 @@ import SingleProduct from "../../components/singleproduct/SingleProduct.js"
 
 const Home = () => {
 
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    loadProducts();
-  }, [])
+  // useEffect(() => {
+  //   loadProducts();
+  // }, [])
 
-  const loadProducts = async () => {
-    const result = await axios.get("http://localhost:8080/products/");
-    setProducts(result.data);
-    console.log(result.data);
-  }
+  // const loadProducts = async () => {
+  //   const result = await axios.get("http://localhost:8080/products/");
+  //   setProducts(result.data);
+  //   console.log(result.data);
+  // }
 
 
   return (
     <div className='home'>
-      <Filter />
+      {/* <Filter />
       <div className='productContainer'>
         {products.map((prod) => {
           return <SingleProduct prod={prod} key={prod.id} />
         })}
-      </div>
+      </div> */}
+      Home
 
     </div>
   );

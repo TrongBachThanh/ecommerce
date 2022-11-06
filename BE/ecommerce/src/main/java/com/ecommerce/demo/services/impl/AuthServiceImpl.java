@@ -5,9 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.demo.constants.ERole;
 import com.ecommerce.demo.data.entities.AccountEntity;
+import com.ecommerce.demo.dto.request.AccountUpdateDto;
 import com.ecommerce.demo.dto.request.LoginInputDto;
+import com.ecommerce.demo.dto.response.AccountResponseDto;
 import com.ecommerce.demo.dto.response.LoginResponseDto;
-import com.ecommerce.demo.dto.response.ResponseDto;
+import com.ecommerce.demo.exceptions.AuthenticationException;
+import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
 import com.ecommerce.demo.repositories.AccountRepository;
 import com.ecommerce.demo.securities.JwtTokenProvider;
@@ -34,6 +37,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	ModelMapper modelMapper;
 
 	@Override
 	public UserDetails loadUserByUsername(String userName) {
@@ -52,9 +58,8 @@ public class AuthServiceImpl implements AuthService {
 
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ResponseEntity<ResponseDto> login(LoginInputDto dto) {
+	public LoginResponseDto login(LoginInputDto dto) {
 		String username = dto.getUsername();
 		Optional<AccountEntity> accountOptional = accountRepository.findByUsername(username);
 
@@ -66,8 +71,7 @@ public class AuthServiceImpl implements AuthService {
 
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		if (!encoder.matches(dto.getPassword(), account.getPassword())) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new ResponseDto(null, "Invalid Username or password!", "400"));
+			throw new AuthenticationException("Password is incorrect");
 		}
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -78,10 +82,32 @@ public class AuthServiceImpl implements AuthService {
 		String jwt = jwtTokenProvider.generateJwtToken(userDetails);
 		Date expriredDate = jwtTokenProvider.getExpirationDate(jwt);
 
-		LoginResponseDto loginResponseDto = new LoginResponseDto(account.getUsername(), account.getId(),
+		LoginResponseDto loginResponseDto = new LoginResponseDto(account.getUsername(), account.getFullname(),
 				account.getRoleId(), jwt, expriredDate);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(loginResponseDto, "Login Suscess!", "200"));
+		
+		return loginResponseDto;
+	}
 
+	@Override
+	public AccountResponseDto createAccount(AccountUpdateDto dto) {
+
+		Optional<AccountEntity> accountOptional = accountRepository.findByUsername(dto.getUsername());
+
+		if (accountOptional.isPresent()) {
+			throw new ItemExistException("Username is already signed up");
+		}
+
+		AccountEntity account = modelMapper.map(dto, AccountEntity.class);
+
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		account.setPassword(encoder.encode(account.getPassword()));
+		account.setRoleId(ERole.ROLE_USER);
+
+		account.setIsActive(true);
+
+		AccountEntity savedAccount = accountRepository.save(account);
+		
+		return modelMapper.map(savedAccount, AccountResponseDto.class);
 	}
 
 }

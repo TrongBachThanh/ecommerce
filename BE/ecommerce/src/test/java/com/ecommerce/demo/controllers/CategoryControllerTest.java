@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -74,13 +75,18 @@ public class CategoryControllerTest {
 	void CreateCategoryById_ShouldReturnCategory() throws Exception {
 		CategoryResponseDto expected = new CategoryResponseDto();
 		CategoryUpdateDto dto = new CategoryUpdateDto();
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("http://localhost:8080/categories/");
+
+		dto.setCode("1");
+		dto.setName("Hi");
+		dto.setId(1l);
+
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("http://localhost:8080/categories/")
+				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto));
 
 		when(categoryService.createCategory(dto)).thenReturn(expected);
 		MvcResult actual = mockMvc.perform(requestBuilder).andReturn();
 
 		assertThat(actual.getResponse().getContentAsString(), is(objectMapper.writeValueAsString(expected)));
-
 	}
 
 }

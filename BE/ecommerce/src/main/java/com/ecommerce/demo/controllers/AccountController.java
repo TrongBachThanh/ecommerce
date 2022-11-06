@@ -19,32 +19,31 @@ import com.ecommerce.demo.dto.response.AccountResponseDto;
 import com.ecommerce.demo.services.AccountService;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/v1/accounts")
 public class AccountController {
-	
+
 	private AccountService accountService;
-	
+
 	@GetMapping
 	List<AccountEntity> getAcounts() {
 		return this.accountService.getAllAccounts();
 	}
-    
-    @GetMapping("/{id}")
-    AccountResponseDto getAccountById(@PathVariable("id") Long id) {
-    	return this.accountService.getAccountById(id);
-    }
-	
-    @PostMapping
-    AccountResponseDto createAccount(@Valid @RequestBody AccountUpdateDto dto) {
-    	return this.accountService.createAccount(dto);
-    }
-    
-    @PutMapping("/{id}")
-    AccountResponseDto updateAccount(@PathVariable("id") Long id, @Valid @RequestBody AccountUpdateDto dto) {
-    	return this.accountService.updateAccount(id, dto);
-    }
-    
-    
+
+	@GetMapping("/{id}")
+	AccountResponseDto getAccountById(@PathVariable("id") Long id) {
+		return this.accountService.getAccountById(id);
+	}
+
+	@PostMapping
+	AccountResponseDto createAccount(@Valid @RequestBody AccountUpdateDto dto) {
+		return this.accountService.createAccount(dto);
+	}
+
+	@PutMapping("/{id}")
+	AccountResponseDto updateAccount(@PathVariable("id") Long id, @Valid @RequestBody AccountUpdateDto dto) {
+		return this.accountService.updateAccount(id, dto);
+	}
+
 	@Autowired
 	public AccountController(AccountService accountService) {
 		this.accountService = accountService;

@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 import { FaShoppingCart, FaTimes } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+
+import Cookies from 'universal-cookie'
+import { useDispatch, useSelector } from "react-redux";
 
 const logo = (
   <div className={styles.logo}>
@@ -25,8 +28,16 @@ const cart = (
 );
 const activeLink = ({ isActive }) =>
   (isActive ? `${styles.active}` : "")
+
+
 const Header = () => {
+  const dispach = useDispatch();
+  const user = useSelector(state => state.user);
+  console.log(user);
+
   const [showMenu, setShowMenu] = useState(false);
+  const cookies = new Cookies();
+  let navigate = useNavigate()
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -35,6 +46,12 @@ const Header = () => {
   const hideMenu = () => {
     setShowMenu(false);
   };
+
+  const logoutUser = () => {
+    dispach();
+    //cookies.remove('token', { path: '/' })
+    // navigate("/")
+  }
 
   return (
     <header>
@@ -71,7 +88,8 @@ const Header = () => {
             <span className={styles.links}>
 
               <NavLink to="/login" className={activeLink}>Login</NavLink>
-              {/* <NavLink to="/register" className={activeLink} >Register</NavLink> */}
+
+              <NavLink to="/" className={activeLink} onClick={logoutUser}>Logout</NavLink>
             </span>
             {cart}
           </div>

@@ -14,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.ecommerce.demo.dto.response.ErrorResponse;
+import com.ecommerce.demo.exceptions.AuthenticationException;
 import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
 
@@ -33,12 +34,17 @@ public class GlobalExceptionsHandler extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler({AuthenticationException.class})
+	protected ResponseEntity<ErrorResponse> handleAuthenticationException(RuntimeException exception,
+			WebRequest request) {
+		ErrorResponse error = new ErrorResponse("05", exception.getMessage());
+		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler({ IllegalArgumentException.class })
 	protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(RuntimeException exception,
 			WebRequest request) {
-		ErrorResponse error = new ErrorResponse("02", exception.getMessage());
+		ErrorResponse error = new ErrorResponse("04", exception.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
 	}
 	

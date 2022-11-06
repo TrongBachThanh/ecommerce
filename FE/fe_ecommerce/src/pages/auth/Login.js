@@ -7,9 +7,13 @@ import Loader from '../../components/loader/Loader'
 
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../../redux/slice/authSlice'
 
 
 const Login = () => {
+    const dispach = useDispatch();
+
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -24,22 +28,24 @@ const Login = () => {
 
         let login = { username, password };
 
-        await axios.post("http://localhost:8080/customer/login", login)
+        await axios.post("http://localhost:8080/login", login)
             .then((res) => {
-                cookies.set('name', res.data.data.name, { path: '/' })
-                cookies.set('customerId', res.data.data.customerId, { path: '/' })
-                cookies.set('role', res.data.data.role, { path: '/' })
-                cookies.set('token', res.data.data.token, { path: '/' })
+                cookies.set('token', res.data.token, { path: '/' })
+
+                const action = addUser({
+                    username: res.data.username,
+                    fullName: res.data.fullName,
+                    role: res.data.role
+                });
+                dispach(action);
+                setIsLoading(false);
+                alert("Login success!")
+                navigate("/");
             })
             .catch((err) => {
                 alert("Username or password is wrong")
+                setIsLoading(false);
             })
-
-        setIsLoading(false);
-        alert("Login success!")
-        navigate("/");
-
-
     }
 
     return (

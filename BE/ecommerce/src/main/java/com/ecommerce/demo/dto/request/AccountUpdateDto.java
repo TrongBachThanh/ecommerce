@@ -25,9 +25,11 @@ public class AccountUpdateDto {
 	
 	@NotBlank(message = "Password is required")
 	private String password;
-
 	
+	@NotBlank(message = "ConfirmPassword is required")
+	private String confirmPassword;
 	
+	@NotBlank(message = "Address is required")
+	private String address;
 	
-
 }

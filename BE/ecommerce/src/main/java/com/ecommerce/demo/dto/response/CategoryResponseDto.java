@@ -12,4 +12,5 @@ public class CategoryResponseDto {
 	private String name;
 	private String code;
 
+	
 }

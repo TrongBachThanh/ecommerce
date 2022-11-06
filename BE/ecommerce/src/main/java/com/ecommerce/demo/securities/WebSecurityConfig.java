@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(jwtEntryPointJwt).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers("/api/v1/admin/**").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers(PUT, "/products").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers(DELETE, "/products").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers(POST, "/products").hasAnyAuthority("ROLE_ADMIN")
@@ -60,6 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/products/**").permitAll()
 				.antMatchers("/categories/**").permitAll()
 				.antMatchers("/login").permitAll()
+				.antMatchers("/register").permitAll()
+				.antMatchers("/api/v1/login").permitAll()
+				.antMatchers("/api/v1/register").permitAll()
 				.anyRequest()
 				.authenticated();
 		httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

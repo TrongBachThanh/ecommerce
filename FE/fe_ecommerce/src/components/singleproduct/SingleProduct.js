@@ -13,7 +13,6 @@ export default function SigleProduct({ prod }) {
     }, [])
 
     const postCart = async (e) => {
-        e.preventDefault()
         axios.post(`http://localhost:8080/products/${prod.id}`, {
             'id': { 'customerId': cookies.get('customerId'), 'productId': prod.id }, 'quantity': 1
         }
