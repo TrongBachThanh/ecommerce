@@ -12,40 +12,66 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.demo.dto.request.ProductUpdateDto;
-import com.ecommerce.demo.dto.response.ProductResponseDto;
+import com.ecommerce.demo.dto.response.product.ListProductWithPaginateResponseDto;
+import com.ecommerce.demo.dto.response.product.ProductResponseDto;
 import com.ecommerce.demo.services.ProductService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/products")
+@RequestMapping("api/v1/products")
 public class ProductController {
 	ProductService productService;
-	
+
 	@Autowired
 	public ProductController(ProductService productService) {
 		this.productService = productService;
 	}
-	
-	@GetMapping("/")
-	public List<ProductResponseDto> getAllProducts() {
-		return productService.getAllProducts();
-	}
-	 
+
 	@GetMapping("/{id}")
 	public ProductResponseDto getProductById(@PathVariable Long id) {
 		return productService.getProductById(id);
 	}
-	
-	@PostMapping()
-	public ProductResponseDto createProduct(@Valid @RequestBody ProductUpdateDto dto) {
-		return productService.createProduct(dto);
+
+//	
+//	@PostMapping()
+//	public ProductResponseDto createProduct(@Valid @RequestBody ProductUpdateDto dto) {
+//		return productService.createProduct(dto);
+//	}
+//	
+//	@PutMapping("/{id}")
+//	public ProductResponseDto updateProduct(@Valid @RequestBody ProductUpdateDto dto, @PathVariable Long id) {
+//		return productService.updateProduct(dto, id);
+//	}
+//	
+	@GetMapping("/new-top-5")
+	List<ProductResponseDto> getTopFiveNewProduct(
+			@RequestParam(name = "limit", defaultValue = "2") Integer limit,
+			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
+			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
+			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
+		return productService.getTopFiveProductByIsNew(offset, limit, sortBase, sortType);
 	}
 	
-	@PutMapping("/{id}")
-	public ProductResponseDto updateProduct(@Valid @RequestBody ProductUpdateDto dto, @PathVariable Long id) {
-		return productService.updateProduct(dto, id);
+	@GetMapping("/featured-top-5")
+	List<ProductResponseDto> getTopFiveFeaturedProduct(
+			@RequestParam(name = "limit", defaultValue = "2") Integer limit,
+			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
+			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
+			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
+		return productService.getTopFiveProductByIsFeatured(offset, limit, sortBase, sortType);
 	}
+
+	@GetMapping("/all")
+	ListProductWithPaginateResponseDto getAllProductsWithPaginateAndSort(
+			@RequestParam(name = "limit", defaultValue = "4") Integer limit,
+			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
+			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
+			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
+		return productService.getAllProductsWithPaginateAndSort(offset, limit, sortBase, sortType);
+	}
+
 }

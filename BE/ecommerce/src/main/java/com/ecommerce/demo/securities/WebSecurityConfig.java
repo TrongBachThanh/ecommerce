@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(POST, "/products").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers("/order/**").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers("/customer/**").permitAll()
-				.antMatchers("/products/**").permitAll()
+				.antMatchers("/api/v1/products/**").permitAll()
 				.antMatchers("/categories/**").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/register").permitAll()

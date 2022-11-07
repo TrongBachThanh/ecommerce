@@ -1,4 +1,4 @@
-package com.ecommerce.demo.dto.response;
+package com.ecommerce.demo.dto.response.category;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
