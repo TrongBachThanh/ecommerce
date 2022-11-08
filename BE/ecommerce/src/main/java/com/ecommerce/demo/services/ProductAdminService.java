@@ -7,4 +7,6 @@ public interface ProductAdminService {
 	public ProductResponseDto createProduct(ProductUpdateDto dto);
 
 	public ProductResponseDto updateProduct(ProductUpdateDto dto, Long id);
+	
+	
 }
