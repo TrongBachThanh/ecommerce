@@ -10,13 +10,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "product")
 public class ProductEntity extends BaseEntity {
@@ -41,6 +45,9 @@ public class ProductEntity extends BaseEntity {
 
 	@Column(name = "thumbnail")
 	private String thumbnail;
+
+	@Column(name = "is_deleted")
+	private boolean isDeleted;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")

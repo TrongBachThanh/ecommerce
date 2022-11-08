@@ -22,7 +22,7 @@ import com.ecommerce.demo.services.ProductService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/v1/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
 	ProductService productService;
 
@@ -54,8 +54,9 @@ public class ProductController {
 			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
 			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
 		return productService.getTopFiveProductByIsNew(offset, limit, sortBase, sortType);
+
 	}
-	
+
 	@GetMapping("/featured-top-5")
 	List<ProductResponseDto> getTopFiveFeaturedProduct(
 			@RequestParam(name = "limit", defaultValue = "2") Integer limit,
@@ -73,5 +74,18 @@ public class ProductController {
 			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
 		return productService.getAllProductsWithPaginateAndSort(offset, limit, sortBase, sortType);
 	}
+
+	@GetMapping()
+	ListProductWithPaginateResponseDto getAllProductsByCategoryCodeWithPaginateAndSort(
+			@RequestParam(name = "category-code") String categoryCode,
+			@RequestParam(name = "limit", defaultValue = "4") Integer limit,
+			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
+			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
+			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
+		return productService.getAllProductsByCategoryCodeWithPaginateAndSort(categoryCode, offset, limit, sortBase,
+				sortType);
+	}
+	
+	
 
 }

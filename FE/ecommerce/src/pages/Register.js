@@ -26,7 +26,7 @@ export default function Register() {
         if (password !== confirmPassword) {
             alert("Confirm password is not match!");
         }
-        await axios.post("http://localhost:8080/register", user)
+        await axios.post("http://localhost:8080/api/v1/register", user)
             .then((res) => {
                 navigate('/')
                 window.location.reload()

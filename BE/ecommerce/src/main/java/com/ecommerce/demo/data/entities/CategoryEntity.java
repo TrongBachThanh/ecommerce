@@ -26,6 +26,9 @@ public class CategoryEntity extends BaseEntity {
 	@Column(name = "code")
 	private String code;
 	
+	@Column(name = "is_deleted")
+	private boolean isDeleted;
+	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductEntity> products;
 }

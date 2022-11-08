@@ -1,5 +1,6 @@
 package com.ecommerce.demo.mappers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ecommerce.demo.data.entities.ProductEntity;
@@ -8,6 +9,10 @@ import com.ecommerce.demo.dto.response.product.ProductResponseDto;
 
 @Component
 public class ProductMapper {
+	
+	@Autowired
+	CategoryMapper categoryMapper;
+		
 	public ProductEntity toDtoEntity(ProductUpdateDto dto) {
 		ProductEntity product = new ProductEntity();
 
@@ -24,7 +29,6 @@ public class ProductMapper {
 		return product;
 	}
 	
-	
 	public ProductResponseDto toProductResponseDto(ProductEntity product) {
 		return ProductResponseDto.builder()
 				.id(product.getId())
@@ -35,6 +39,7 @@ public class ProductMapper {
 				.isFeatured(product.isFeatured())
 				.isNew(product.isNew())
 				.thumbnail(product.getThumbnail())
+				.category(categoryMapper.toCategoryResponseDto(product.getCategory()))
 				.build();
 	}
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -193,5 +194,47 @@ public class ProductServiceImpl implements ProductService {
 
 		return listProductWithPaginateResponse;
 	}
+
+	@Override
+	public ListProductWithPaginateResponseDto getAllProductsByCategoryCodeWithPaginateAndSort(String categoryCode,
+			Integer offset, Integer limit, String sortBase, String sortType) {
+
+		Optional<CategoryEntity> categoryOption = categoryRepository.findByCodeAndIsDeletedFalse(categoryCode);
+
+		if (categoryCode.isEmpty()) {
+			throw new ResourceFoundException("Category Not Found");
+		}
+
+		Pageable pageable = pageableUtil.getPageable(offset, limit, sortBase, sortType);
+
+		Page<ProductEntity> productPage = productRepository
+				.findAllByIsDeletedFalseAndCategory_Id(categoryOption.get().getId(), pageable);
+
+		List<ProductResponseDto> productResponseDtoList = productPage.stream().map(productMapper::toProductResponseDto)
+				.collect(Collectors.toList());
+
+		ListProductWithPaginateResponseDto listProductWithPaginateResponse = ListProductWithPaginateResponseDto
+				.builder().products(productResponseDtoList).totalRow(productPage.getTotalElements())
+				.totalPage(productPage.getTotalPages()).build();
+
+		return listProductWithPaginateResponse;
+	}
+
+	@Override
+	public ListProductWithPaginateResponseDto getAllProductsSearchByNameWithPaginate(String query, Integer offset,
+			Integer limit) {
+		Page<ProductEntity> productPage = productRepository
+				.findAllByIsDeletedFalseAndNameLikeIgnoreCase("%" + query + "%", PageRequest.of(offset, limit));
+
+		List<ProductResponseDto> productResponseDtoList = productPage.stream().map(productMapper::toProductResponseDto)
+				.collect(Collectors.toList());
+
+		ListProductWithPaginateResponseDto listProductWithPaginateResponse = ListProductWithPaginateResponseDto
+				.builder().products(productResponseDtoList).totalRow(productPage.getTotalElements())
+				.totalPage(productPage.getTotalPages()).build();
+		return listProductWithPaginateResponse;
+	}
+	
+	
 
 }
