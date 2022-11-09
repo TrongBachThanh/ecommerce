@@ -1,3 +1,7 @@
+# ▶️ Watch Full Playlist 👇
+[![Everything Is AWESOME](https://yt-embed.herokuapp.com/embed?v=55_EIL59sIU)](https://youtube.com/playlist?list=PLKxAYAE8gnTvc7wheQp-AYq2xlwms6UaB "Code With Yd")
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

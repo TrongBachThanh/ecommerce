@@ -28,8 +28,14 @@ import lombok.Setter;
 @Table(name = "account")
 public class AccountEntity extends BaseEntity {
 
-	@Column(name = "fullname")
-	private String fullname;
+	@Column(name = "fullName")
+	private String fullName;
+
+	@Column(name = "firstName")
+	private String firstName;
+
+	@Column(name = "lastName")
+	private String lastName;
 
 	@Column(name = "username")
 	private String username;

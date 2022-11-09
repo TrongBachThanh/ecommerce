@@ -60,9 +60,10 @@ public class AccountServiceImpl implements AccountService {
 		account.setRoleId(ERole.ROLE_USER);
 
 		account.setIsActive(true);
+		account.setFullName(String.join(" ", account.getFirstName(), account.getLastName()));
 
 		AccountEntity savedAccount = accountRepository.save(account);
-		
+
 		return modelMapper.map(savedAccount, AccountResponseDto.class);
 	}
 

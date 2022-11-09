@@ -1,99 +1,67 @@
-import { React } from 'react'
-import { FaShoppingCart } from 'react-icons/fa'
-import {
-    Container, FormControl, Navbar,
-    Nav, Dropdown, Button,
-} from 'react-bootstrap'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import Cookies from 'universal-cookie'
-import "./style.css"
+import React, { useContext, useState, useEffect } from 'react';
+import { Container, Navbar, Nav } from 'react-bootstrap';
+import { ThemeContext } from '../GlobalComponents/ThemeProvider';
+import { BiSun, BiMoon, BiCart} from 'react-icons/bi';
+import { VscAccount } from 'react-icons/vsc';
+import { Link } from "@reach/router";
+import { useCart } from "react-use-cart";
 
 
-export default function Header() {
+const Header = () => {
+    const { theme, setThemeMode } = useContext(ThemeContext); 
+    const [darkMode, setDarkMode] = useState(theme);
 
-    let navigate = useNavigate()
-    const location = useLocation();
-    const path = location.pathname
-    const cookies = new Cookies();
+    useEffect(()=>{
+        setThemeMode(darkMode);
+        console.log(darkMode)
+    },[darkMode]);
 
+    const {
+        isEmpty,
+        totalItems,
+    } = useCart();
 
-    const logout = async (e) => {
-
-        cookies.remove('username', { path: '/' })
-        cookies.remove('fullName', { path: '/' })
-        cookies.remove('role', { path: '/' })
-        cookies.remove('token', { path: '/' })
-        navigate("/")
-        window.location.reload()
-    }
     return (
-        <Navbar bg="dark" variant="dark" style={{ height: 80 }}>
-
-
-            {
-                cookies.get('role') !== "ROLE_ADMIN" ? (
-                    <Container>
-                        <Navbar.Brand className='shopName'>
-                            <Link to="/" className='logo'>Ecommerce</Link>
-                        </Navbar.Brand>
-
-                        <Navbar.Text className='search'>
-                            <FormControl
-                                style={{ width: 600 }}
-                                placeholder='Search products'
-                                className='m-auto' />
-                        </Navbar.Text>
-
-                        <Nav>
-                            <Link to='/cart'>
-                                <Button variant='success'>
-                                    <FaShoppingCart color="white" fontSize="25px" /> Cart
-                                </Button>
-                            </Link>
-
-                            {cookies.get('username') == null ? (
-                                <Button style={{ marginLeft: 10 }} >
-                                    <Link to="/login" className='login'>Login</Link>
-                                </Button>
-                            ) : (
-                                <Dropdown style={{ marginLeft: 10 }}>
-                                    <Dropdown.Toggle>
-                                        {cookies.get('name')}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        <a className="dropdown-item" href='/customer'>Info</a>
-                                        <a className="dropdown-item" href='/customer/order'>Orders</a>
-                                        <Dropdown.Divider />
-                                        <a className="dropdown-item" onClick={logout}>Log Out</a>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            )}
-
-                        </Nav>
-
-                    </Container>
-                ) : (
-                    <Container>
-                        <Navbar.Brand className='shopName'>
-                            <Link to="/">Ecommerce Admin</Link>
-                        </Navbar.Brand>
-                        <Nav>
-                            <Link to="/manager">
-                                <Button>Manager</Button>
-                            </Link>
-                            <Dropdown style={{ marginLeft: 10 }}>
-                                <Dropdown.Toggle>
-                                    {cookies.get('name')}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <a className="dropdown-item" onClick={logout}>Log Out</a>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Nav>
-                    </Container>
-                )
-            }
-        </Navbar>
-
-    )
+        <Navbar collapseOnSelect expand="md"
+                variant={darkMode? 'dark':'light'}
+                className={darkMode? 'bg-light-black border-bottom': 'bg-light border-bottom'}
+                style={{ width: '100%', position: 'fixed', zIndex: 100}}
+        >
+        <Container>
+          <Link to="/">
+            <Navbar.Brand className={darkMode? 'text-dark-primary': 'text-light-primary'}>
+                <b>Simple-ecart</b>
+            </Navbar.Brand>
+          </Link>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Link to="sign-in" className={`nav-link ${darkMode? 'text-dark-primary' : 'text-light-primary'}`}>
+                Sign in
+              </Link>
+              <Nav.Link 
+                className={darkMode? 'text-dark-primary': 'text-light-primary'}
+                onClick={()=>setDarkMode(!darkMode)}
+              >
+                {darkMode? <BiSun size="1.7rem" />: <BiMoon size="1.7rem" />}
+              </Nav.Link>
+              <Link
+                to="/cart"
+                className={`${darkMode? 'text-dark-primary': 'text-light-primary'} d-flex align-items-center`}
+              >
+                <BiCart size="2rem"/>
+                {!isEmpty && <span style={{ position: 'relative', left: '-21px', top: '-18px'}}>{totalItems}</span>}
+                <span style={{ marginLeft: !isEmpty ? '-13px': 0}}>&nbsp;Cart</span>
+              </Link>
+              <Link to="my-account" className={`nav-link ${darkMode? 'text-dark-primary': 'text-light-primary'}`}>
+                  <VscAccount size="1.8rem"/>
+                  &nbsp;My Account
+              </Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    );
 };
+
+export default Header;

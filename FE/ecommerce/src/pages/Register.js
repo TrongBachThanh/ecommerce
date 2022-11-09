@@ -1,141 +1,121 @@
-import { React, useState } from 'react'
+import React, { useState } from 'react';
+import { Container, Row, Col, Button, Form, Spinner, InputGroup } from 'react-bootstrap';
+import { useThemeHook } from '../GlobalComponents/ThemeProvider';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/high-res.css';
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
-import { Button } from 'react-bootstrap'
+import { useNavigate } from '@reach/router';
 
-export default function Register() {
 
-    let navigate = useNavigate()
-    const [user, setUser] = useState({
-        username: "",
-        fullname: "",
-        phone: "",
-        email: "",
-        address: "",
-        password: "",
-        confirmPassword: ""
-    })
-    const { username, fullname, phone, email, address, password, confirmPassword } = user;
+const Register = () => {
+    const [loading, setLoading] = useState(false);
+    const [number, setNumber] = useState(null);
+    const [theme] = useThemeHook();
+    const navigate = useNavigate();
 
-    const onInputChange = (e) => {
-        setUser({ ...user, [e.target.name]: e.target.value })
-    }
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        const form = event.currentTarget;
+        event.preventDefault();
+        const username = form.username.value;
+        const password = form.password.value;
+        const confirmPassword = form.confirmPassword.value;
+
+        const firstName = form.firstName.value;
+        const lastName = form.lastName.value;
+        const email = form.email.value;
+
         if (password !== confirmPassword) {
-            alert("Confirm password is not match!");
+            alert('Confirm Password is not match!');
         }
-        await axios.post("http://localhost:8080/api/v1/register", user)
-            .then((res) => {
-                navigate('/')
-                window.location.reload()
-            })
-            .catch((error) => {
-                alert(error)
-            })
-    };
 
+        if (username && password && firstName && lastName && email && number) {
+            setLoading(true);
+            console.log('call api here');
+            console.log(username, password, firstName, lastName, email, number, confirmPassword);
+            setLoading(true);
+            await axios.post("http://localhost:8080/api/v1/register", { username, password, firstName, lastName, email, number, confirmPassword })
+                .then((res) => {
+                    alert('Login successfully');
+                })
+                .catch((error) => {
+                    alert(error)
+                })
+                .finally(() => {
+                    setLoading(false);
+                    navigate('/login')
+                    window.location.reload()
+                })
+        }
+    }
     return (
-        <div className='container'>
-            <div className='row'>
-                <div className='col-md-6 offset-md-2 border rounded p-4 mt-2'>
-                    <h2 className='text-center m-4'>Login</h2>
-                    <form onSubmit={(e) => handleRegister(e)}>
-                        <div className='mb-3'>
-                            <label htmlFor="username" className='form-label'>
-                                Username
-                            </label>
-                            <input
-                                type={"text"}
-                                className="form-control"
-                                name="username"
-                                value={username}
-                                onChange={(e) => onInputChange(e)} />
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor="fullname" className='form-label'>
-                                FullName
-                            </label>
-                            <input
-                                type={"text"}
-                                className="form-control"
-                                name="fullname"
-                                value={fullname}
-                                onChange={(e) => onInputChange(e)} />
-
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor="phone" className='form-label'>
-                                Phone Number
-                            </label>
-                            <input
-                                type={"text"}
-                                className="form-control"
-                                name="phone"
-                                value={phone}
-                                onChange={(e) => onInputChange(e)} />
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor="address" className='form-label'>
-                                Address
-                            </label>
-                            <input
-                                type={"text"}
-                                className="form-control"
-                                name="address"
-                                value={address}
-                                onChange={(e) => onInputChange(e)} />
-                        </div>
-
-                        <div className='mb-3'>
-                            <label htmlFor="email" className='form-label'>
-                                Email
-                            </label>
-                            <input
-                                type={"text"}
-                                className="form-control"
-                                name="email"
-                                value={email}
-                                onChange={(e) => onInputChange(e)}
+        <Container className="py-5 mt-5">
+            <Row className="justify-content-center mt-5">
+                <Col xs={11} sm={10} md={8} lg={4} className={`p-4 rounded ${theme ? 'text-light bg-dark' : 'text-black bg-light'}`}>
+                    <h1 className={`text-center border-bottom pb-3 ${theme ? 'text-dark-primary' : 'text-light-primary'}`}>
+                        Create Account
+                    </h1>
+                    <Form onSubmit={handleSubmit}>
+                        <Row>
+                            <Form.Group className="mb-3 col-lg-6">
+                                <Form.Label>First name</Form.Label>
+                                <Form.Control name="firstName" type="text" placeholder="First name" required />
+                            </Form.Group>
+                            <Form.Group className="mb-3 col-lg-6">
+                                <Form.Label>Last name</Form.Label>
+                                <Form.Control name="lastName" type="text" placeholder="Last name" required />
+                            </Form.Group>
+                        </Row>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control name="email" type="email" placeholder="Email" required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control name="username" type="text" placeholder="Username" minLength={3} required />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Mobile number</Form.Label>
+                            <PhoneInput
+                                country={'in'}
+                                value={number}
+                                onChange={phone => setNumber(phone)}
+                                className="text-dark"
                             />
-                        </div>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control name="password" type="password" placeholder="Password" minLength={6} required />
+                        </Form.Group>
 
-                        <div className='mb-3'>
-                            <label htmlFor="password" className='form-label'>
-                                Password
-                            </label>
-                            <input
-                                type={"password"}
-                                className="form-control"
-                                name="password"
-                                value={password}
-                                onChange={(e) => onInputChange(e)} />
+                        <Form.Group className="mb-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control name="confirmPassword" type="password" placeholder="Confirm Password" minLength={6} required />
+                        </Form.Group>
+                        <Button
+                            type="submit"
+                            className={`${theme ? 'bg-dark-primary text-black' : 'bg-light-primary'} m-auto d-block`}
+                            disabled={loading}
+                            style={{ border: 0 }}
+                        >
+                            {loading ?
+                                <>
+                                    <Spinner
+                                        as="span"
+                                        animation="grow"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                    &nbsp;Loading...
+                                </> : 'Continue'
+                            }
+                        </Button>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
+    );
+};
 
-                        </div>
-                        <div className='mb-3'>
-                            <label htmlFor="confirmPassword" className='form-label'>
-                                Confirm Password
-                            </label>
-                            <input
-                                type={"password"}
-                                className="form-control"
-                                name="confirmPassword"
-                                value={confirmPassword}
-                                onChange={(e) => onInputChange(e)}
-                            />
-                        </div>
-
-                        <div className='d-flex justify-content-center'>
-                            <Button type="submit">Register</Button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    )
-}
+export default Register;

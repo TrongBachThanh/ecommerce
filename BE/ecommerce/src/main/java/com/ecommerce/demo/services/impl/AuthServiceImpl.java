@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-	
+
 	@Autowired
 	ModelMapper modelMapper;
 
@@ -82,9 +82,9 @@ public class AuthServiceImpl implements AuthService {
 		String jwt = jwtTokenProvider.generateJwtToken(userDetails);
 		Date expriredDate = jwtTokenProvider.getExpirationDate(jwt);
 
-		LoginResponseDto loginResponseDto = new LoginResponseDto(account.getUsername(), account.getFullname(),
+		LoginResponseDto loginResponseDto = new LoginResponseDto(account.getUsername(), account.getFullName(),
 				account.getRoleId(), jwt, expriredDate);
-		
+
 		return loginResponseDto;
 	}
 
@@ -105,8 +105,10 @@ public class AuthServiceImpl implements AuthService {
 
 		account.setIsActive(true);
 
+		account.setFullName(String.join(" ", account.getFirstName(), account.getLastName()));
+
 		AccountEntity savedAccount = accountRepository.save(account);
-		
+
 		return modelMapper.map(savedAccount, AccountResponseDto.class);
 	}
 

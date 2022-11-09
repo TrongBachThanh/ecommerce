@@ -1,45 +1,57 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import Product from '../components/Product';
+import React, {useEffect, useState} from 'react';
+import { Container, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
+import { useThemeHook } from '../GlobalComponents/ThemeProvider';
+import { BiSearch } from 'react-icons/bi';
+import SearchFilter from 'react-filter-search';
+import ProductCard from '../components/ProductCard';
 
-import "./Home.css"
-export default function Home() {
-    const [newProducts, setNewProducts] = useState([]);
-    const [featuredProducts, setFeaturedProducts] = useState([]);
+const Home = () => {
+    const [theme] = useThemeHook();
+    const [searchInput, setSearchInput] = useState('');
+    const [productData, setProductData] = useState([]);
 
-
-    useEffect(() => {
-        loadNewProducts();
-    }, [])
-
-    useEffect(() => {
-        loadFeaturedProducts();
-    }, [])
-
-    const loadNewProducts = async () => {
-        await axios.get("http://localhost:8080/api/v1/products/new-top-5")
-            .then((res) => {
-                setNewProducts(res.data);
-                console.log(res)
-            })
+    async function getResponse(){
+        const res = await fetch('https://fakestoreapi.com/products')
+                          .then(res=> res.json());
+                          setProductData(await res);
     }
 
-    const loadFeaturedProducts = async () => {
-        await axios.get("http://localhost:8080/api/v1/products/featured-top-5")
-            .then((res) => {
-                setFeaturedProducts(res.data);
-            })
-    }
+    useEffect(()=>{
+        getResponse();
+    },[]);
 
     return (
-        <div className='products'>
-            {
-                newProducts.map(product => {
-                    return <Product key={product.id} product={product} />
-                })
+        <Container className="py-4">
+            <Row className="justify-content-center">
+                <Col xs={10} md={7} lg={6} xl={4} className="mb-3 mx-auto text-center">
+                    <h1 className={theme? 'text-light my-5': 'text-black my-5'}>Search products</h1>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text className={theme? 'bg-black text-dark-primary': 'bg-light text-light-primary'}>
+                            <BiSearch size="2rem" />
+                        </InputGroup.Text>
+                        <FormControl 
+                            placeholder="Search"
+                            value={searchInput}
+                            onChange={(e)=> setSearchInput(e.target.value)}
+                            className={theme? 'bg-light-black text-light': 'bg-light text-black'}
+                        />
+                    </InputGroup>
+                </Col>
+                <SearchFilter 
+                    value={searchInput}
+                    data={productData}
+                    renderResults={results =>(
+                        <Row className="justify-content-center">
+                            {results.map((item, i)=>(
+                                <ProductCard data={item} key={i} />
+                            ))}
+                        </Row>
+                    )}
+                />
+                
+            </Row>
+        </Container>
+    );
+};
 
-
-            }
-        </div>
-    )
-}
+export default Home;

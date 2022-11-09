@@ -2,20 +2,14 @@ package com.ecommerce.demo.controllers;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecommerce.demo.dto.request.ProductUpdateDto;
 import com.ecommerce.demo.dto.response.product.ListProductWithPaginateResponseDto;
 import com.ecommerce.demo.dto.response.product.ProductResponseDto;
 import com.ecommerce.demo.services.ProductService;
@@ -36,20 +30,9 @@ public class ProductController {
 		return productService.getProductById(id);
 	}
 
-//	
-//	@PostMapping()
-//	public ProductResponseDto createProduct(@Valid @RequestBody ProductUpdateDto dto) {
-//		return productService.createProduct(dto);
-//	}
-//	
-//	@PutMapping("/{id}")
-//	public ProductResponseDto updateProduct(@Valid @RequestBody ProductUpdateDto dto, @PathVariable Long id) {
-//		return productService.updateProduct(dto, id);
-//	}
-//	
 	@GetMapping("/new-top-5")
 	List<ProductResponseDto> getTopFiveNewProduct(
-			@RequestParam(name = "limit", defaultValue = "2") Integer limit,
+			@RequestParam(name = "limit", defaultValue = "10") Integer limit,
 			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
 			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
 			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
@@ -59,7 +42,7 @@ public class ProductController {
 
 	@GetMapping("/featured-top-5")
 	List<ProductResponseDto> getTopFiveFeaturedProduct(
-			@RequestParam(name = "limit", defaultValue = "2") Integer limit,
+			@RequestParam(name = "limit", defaultValue = "10") Integer limit,
 			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
 			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
 			@RequestParam(name = "sort-type", defaultValue = "DESC") String sortType) {
@@ -85,7 +68,5 @@ public class ProductController {
 		return productService.getAllProductsByCategoryCodeWithPaginateAndSort(categoryCode, offset, limit, sortBase,
 				sortType);
 	}
-	
-	
 
 }

@@ -27,7 +27,7 @@ public class ProductEntity extends BaseEntity {
 	@Column(name = "code")
 	private String code;
 
-	@Column(name = "description")
+	@Column(name = "description",columnDefinition = "text")
 	private String description;
 
 	@Column(name = "is_featured", columnDefinition = "boolean default false")
