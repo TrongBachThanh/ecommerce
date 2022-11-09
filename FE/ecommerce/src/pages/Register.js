@@ -4,12 +4,12 @@ import { useThemeHook } from '../GlobalComponents/ThemeProvider';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/high-res.css';
 import axios from 'axios'
-import { useNavigate } from '@reach/router';
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
     const [loading, setLoading] = useState(false);
-    const [number, setNumber] = useState(null);
+    const [phone, setPhone] = useState(null);
     const [theme] = useThemeHook();
     const navigate = useNavigate();
 
@@ -29,29 +29,26 @@ const Register = () => {
             alert('Confirm Password is not match!');
         }
 
-        if (username && password && firstName && lastName && email && number) {
+        if (username && password && firstName && lastName && email && phone) {
             setLoading(true);
-            console.log('call api here');
-            console.log(username, password, firstName, lastName, email, number, confirmPassword);
-            setLoading(true);
-            await axios.post("http://localhost:8080/api/v1/register", { username, password, firstName, lastName, email, number, confirmPassword })
+            await axios.post("http://localhost:8080/api/v1/register", { username, password, firstName, lastName, email, phone, confirmPassword })
                 .then((res) => {
                     alert('Login successfully');
+                    navigate('/sign-in');
+                    window.location.reload()
                 })
                 .catch((error) => {
                     alert(error)
                 })
                 .finally(() => {
                     setLoading(false);
-                    navigate('/login')
-                    window.location.reload()
                 })
         }
     }
     return (
         <Container className="py-5 mt-5">
             <Row className="justify-content-center mt-5">
-                <Col xs={11} sm={10} md={8} lg={4} className={`p-4 rounded ${theme ? 'text-light bg-dark' : 'text-black bg-light'}`}>
+                <Col xs={11} sm={10} md={8} lg={6} className={`p-4 rounded ${theme ? 'text-light bg-dark' : 'text-black bg-light'}`}>
                     <h1 className={`text-center border-bottom pb-3 ${theme ? 'text-dark-primary' : 'text-light-primary'}`}>
                         Create Account
                     </h1>
@@ -77,9 +74,9 @@ const Register = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Mobile number</Form.Label>
                             <PhoneInput
-                                country={'in'}
-                                value={number}
-                                onChange={phone => setNumber(phone)}
+                                country={'vn'}
+                                value={phone}
+                                onChange={phone => setPhone(phone)}
                                 className="text-dark"
                             />
                         </Form.Group>

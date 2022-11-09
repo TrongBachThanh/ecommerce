@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form, Spinner, InputGroup } from 'react-bootstrap';
 import { useThemeHook } from '../GlobalComponents/ThemeProvider';
-import { Link, useNavigate } from "@reach/router";
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
 //icons
 import { AiOutlineUser } from 'react-icons/ai';
 import { VscKey } from 'react-icons/vsc';
+import { useNavigate, Link } from 'react-router-dom';
 
 const SignIn = () => {
     const [loading, setLoading] = useState(false);
@@ -39,26 +39,6 @@ const SignIn = () => {
                     window.location.reload()
                     alert('Login successfully');
                 })
-
-
-            // setLoading(true);
-            // fetch('https://fakestoreapi.com/auth/login',{
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body:JSON.stringify({
-            //         username: username,
-            //         password: password
-            //     })
-            // }).then(res=>res.json())
-            // .then(json=>sessionStorage.setItem("token", json.token))
-            // .catch(error=> console.error(error))
-            // .finally(()=>{
-            //     setLoading(false);
-            //     navigate('/', {replace: true})
-            //     alert('Login successfully');
-            // })
         }
     }
     return (

@@ -11,6 +11,7 @@ import com.ecommerce.demo.data.entities.CategoryEntity;
 import com.ecommerce.demo.data.entities.ProductEntity;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+	Optional<ProductEntity> findByCode(String code);
 	List<ProductEntity> findByIsNew(boolean isNew);
 
 	List<ProductEntity> findByIsFeatured(boolean isFeatured);

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.ecommerce.demo.data.entities.ProductEntity;
 import com.ecommerce.demo.dto.request.ProductUpdateDto;
+import com.ecommerce.demo.dto.response.product.ProductDetailResponseDto;
 import com.ecommerce.demo.dto.response.product.ProductResponseDto;
 import com.ecommerce.demo.repositories.CategoryRepository;
 
@@ -19,6 +20,7 @@ public class ProductMapper {
 
 	@Autowired
 	ProductImageMapper productImageMapper;
+	
 
 	public ProductEntity toProductEntity(ProductUpdateDto dto) {
 		ProductEntity product = new ProductEntity();
@@ -33,9 +35,9 @@ public class ProductMapper {
 		product.setNew(dto.isNew());
 		product.setFeatured(dto.isFeatured());
 		product.setCategory(categoryRepository.findByCode(dto.getCategoryCode()).get());
-		if(!dto.getImages().isEmpty()) {
-			product.setProductImages(productImageMapper.mapImagesProductDtoToEntity(dto.getImages(), product));
-		}
+//		if(!dto.getImages().isEmpty()) {
+//			product.setProductImages(productImageMapper.mapImagesProductDtoToEntity(dto.getImages(), product));
+//		}
 		return product;
 	}
 
@@ -49,5 +51,15 @@ public class ProductMapper {
 				.isNew(product.isNew())
 				.thumbnail(product.getThumbnail())
 				.category(categoryMapper.toCategoryResponseDto(product.getCategory())).build();
+	}
+	
+	public ProductDetailResponseDto toProductDetailResponseDto(ProductEntity product) {
+		return ProductDetailResponseDto.builder()
+				.id(product.getId())
+				.code(product.getCode())
+				.description(product.getDescription())
+				.name(product.getName()).price(product.getPrice())
+				.images(productImageMapper.mapImagesEntityToListProductImageResponseDto(product.getProductImages()))
+				.build();
 	}
 }

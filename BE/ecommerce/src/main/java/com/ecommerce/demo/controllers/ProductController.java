@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.demo.dto.response.product.ListProductWithPaginateResponseDto;
+import com.ecommerce.demo.dto.response.product.ProductDetailResponseDto;
 import com.ecommerce.demo.dto.response.product.ProductResponseDto;
 import com.ecommerce.demo.services.ProductService;
 
@@ -25,9 +26,9 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	@GetMapping("/{id}")
-	public ProductResponseDto getProductById(@PathVariable Long id) {
-		return productService.getProductById(id);
+	@GetMapping("/{code}")
+	public ProductDetailResponseDto getProductById(@PathVariable String code) {
+		return productService.getProductByCode(code);
 	}
 
 	@GetMapping("/new-top-5")
