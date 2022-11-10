@@ -4,23 +4,27 @@ import { useThemeHook } from '../GlobalComponents/ThemeProvider';
 import { BiSearch } from 'react-icons/bi';
 import SearchFilter from 'react-filter-search';
 import ProductCard from '../components/ProductCard';
+import { useParams } from 'react-router-dom';
 
-const Home = () => {
+
+function Cagetories() {
     const [theme] = useThemeHook();
     const [searchInput, setSearchInput] = useState('');
     const [productData, setProductData] = useState([]);
+    const params = useParams();
+    const { categoryCode } = params;
 
     async function getResponse() {
-        const res = await fetch('http://localhost:8080/api/v1/products/new-top-5')
+        const res = await fetch(` http://localhost:8080/api/v1/products/categories/${categoryCode}`)
             .then(res => res.json());
-        setProductData(await res);
+        setProductData(await res.products);
+        // http://localhost:8080/api/v1/products/categories/${categoryCode}
         // http://localhost:8080/api/v1/products/new-top-5
-        // https://fakestoreapi.com/products
     }
 
     useEffect(() => {
         getResponse();
-    }, []);
+    }, [categoryCode]);
 
     return (
         <Container className="py-4">
@@ -53,10 +57,9 @@ const Home = () => {
                         </Row>
                     )}
                 />
-
             </Row>
         </Container>
-    );
-};
+    )
+}
 
-export default Home;
+export default Cagetories

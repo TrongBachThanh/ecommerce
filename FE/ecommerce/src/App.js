@@ -3,7 +3,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useThemeHook } from './GlobalComponents/ThemeProvider';
 import Header from './components/Header';
-import { Router } from "@reach/router";
 
 //Pages
 import Home from './Pages/Home';
@@ -13,6 +12,7 @@ import SignIn from "./Pages/SignIn";
 import Register from "./Pages/Register";
 import MyAccount from "./Pages/MyAccount";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Cagetories from "./Pages/Cagetories";
 
 function App() {
   const [theme] = useThemeHook();
@@ -27,6 +27,8 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} exact />
           <Route path='/register' element={<Register />} exact />
           <Route path='product-details/:productId' element={<ProductDetails />} exact />
+          <Route path='categories/:categoryCode' element={<Cagetories />} exact />
+
           <Route path='/cart' element={<Cart />} exact />
         </Routes>
       </main>

@@ -6,6 +6,8 @@ import { VscAccount } from 'react-icons/vsc';
 import { useCart } from "react-use-cart";
 import Cookies from 'universal-cookie'
 import { Link, useNavigate } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Header = () => {
   const { theme, setThemeMode } = useContext(ThemeContext);
@@ -24,14 +26,12 @@ const Header = () => {
   } = useCart();
 
   const handleSignOut = () => {
-    alert('sign out')
     cookies.remove('username', { path: '/' })
     cookies.remove('fullName', { path: '/' })
     cookies.remove('role', { path: '/' })
     cookies.remove('token', { path: '/' })
     navigate("/")
     window.location.reload()
-    alert('Sign out')
   }
 
   return (
@@ -44,12 +44,32 @@ const Header = () => {
         cookies.get('role') !== "ROLE_ADMIN" ? (
           <Container>
             <Link to="/">
-              <Navbar.Brand className={darkMode ? 'text-dark-primary' : 'text-light-primary'}>
+              <Navbar.Brand className={darkMode ? 'text-dark-primary' : 'text-light-primary'} >
                 <b>Simple-ecart</b>
               </Navbar.Brand>
             </Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
+              <DropdownButton id="dropdown-basic-button" title="Categories">
+                <Dropdown.Item>
+                  <Link to="/categories/phone">
+                    Phone
+                  </Link>
+                </Dropdown.Item>
+
+                <Dropdown.Item to="">
+                  <Link to="/categories/tablet">
+                    Ipad
+                  </Link>
+                </Dropdown.Item>
+
+                <Dropdown.Item>
+                  <Link to="/categories/laptop">
+                    Laptop
+                  </Link>
+
+                </Dropdown.Item>
+              </DropdownButton>
               <Nav className="ms-auto">
                 {
                   cookies.get('role') === "ROLE_USER" ? (

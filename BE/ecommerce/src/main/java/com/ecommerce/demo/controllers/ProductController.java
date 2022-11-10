@@ -27,7 +27,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{code}")
-	public ProductDetailResponseDto getProductById(@PathVariable String code) {
+	public ProductDetailResponseDto getProductByCode(@PathVariable String code) {
 		return productService.getProductByCode(code);
 	}
 
@@ -59,9 +59,9 @@ public class ProductController {
 		return productService.getAllProductsWithPaginateAndSort(offset, limit, sortBase, sortType);
 	}
 
-	@GetMapping()
+	@GetMapping("/categories/{categoryCode}")
 	ListProductWithPaginateResponseDto getAllProductsByCategoryCodeWithPaginateAndSort(
-			@RequestParam(name = "category-code") String categoryCode,
+			@PathVariable("categoryCode") String categoryCode,
 			@RequestParam(name = "limit", defaultValue = "4") Integer limit,
 			@RequestParam(name = "offset", defaultValue = "0") Integer offset,
 			@RequestParam(name = "sort-base", defaultValue = "id") String sortBase,
