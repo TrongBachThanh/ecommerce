@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ecommerce.demo.data.entities.ProductEntity;
+import com.ecommerce.demo.data.repositories.CategoryRepository;
 import com.ecommerce.demo.dto.request.ProductUpdateDto;
 import com.ecommerce.demo.dto.response.product.ProductDetailResponseDto;
 import com.ecommerce.demo.dto.response.product.ProductResponseDto;
-import com.ecommerce.demo.repositories.CategoryRepository;
 
 @Component
 public class ProductMapper {

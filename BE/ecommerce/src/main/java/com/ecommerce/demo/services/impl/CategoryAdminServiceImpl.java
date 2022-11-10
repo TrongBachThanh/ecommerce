@@ -4,10 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.data.entities.CategoryEntity;
+import com.ecommerce.demo.data.repositories.CategoryRepository;
 import com.ecommerce.demo.dto.request.CategoryUpdateDto;
 import com.ecommerce.demo.dto.response.CategoryResponseDto;
 import com.ecommerce.demo.exceptions.ItemExistException;
-import com.ecommerce.demo.repositories.CategoryRepository;
 import com.ecommerce.demo.services.CategoryAdminService;
 
 @Service

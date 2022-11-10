@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.data.entities.RatingEntity;
+import com.ecommerce.demo.data.repositories.RatingRepository;
 import com.ecommerce.demo.dto.request.RatingUpdateDto;
 import com.ecommerce.demo.dto.response.RatingResponseDto;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
-import com.ecommerce.demo.repositories.RatingRepository;
 import com.ecommerce.demo.services.RatingService;
 
 @Service

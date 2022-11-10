@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.data.entities.RoleEntity;
+import com.ecommerce.demo.data.repositories.RoleRepository;
 import com.ecommerce.demo.dto.response.RoleResponseDto;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
-import com.ecommerce.demo.repositories.RoleRepository;
 import com.ecommerce.demo.services.RoleService;
 
 @Service

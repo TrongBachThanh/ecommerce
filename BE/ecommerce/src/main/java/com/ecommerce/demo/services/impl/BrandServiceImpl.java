@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 
 import com.ecommerce.demo.data.entities.BrandEntity;
+import com.ecommerce.demo.data.repositories.BrandRepository;
 import com.ecommerce.demo.dto.request.BrandUpdateDto;
 import com.ecommerce.demo.dto.response.BrandResponseDto;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
-import com.ecommerce.demo.repositories.BrandRepository;
 import com.ecommerce.demo.services.BrandService;
 
 public class BrandServiceImpl implements BrandService {

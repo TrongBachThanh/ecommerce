@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.data.entities.ProductEntity;
 import com.ecommerce.demo.data.entities.ProductImageEntity;
+import com.ecommerce.demo.data.repositories.ProductImageRepository;
+import com.ecommerce.demo.data.repositories.ProductRepository;
 import com.ecommerce.demo.dto.request.ProductImageUpdateDto;
 import com.ecommerce.demo.dto.response.ProductResponseDto;
-import com.ecommerce.demo.repositories.ProductImageRepository;
-import com.ecommerce.demo.repositories.ProductRepository;
 import com.ecommerce.demo.services.ProductImageService;
 
 @Service

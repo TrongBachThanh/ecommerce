@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.data.entities.CategoryEntity;
 import com.ecommerce.demo.data.entities.ProductEntity;
+import com.ecommerce.demo.data.repositories.CategoryRepository;
+import com.ecommerce.demo.data.repositories.ProductRepository;
 import com.ecommerce.demo.dto.response.product.ListProductWithPaginateResponseDto;
 import com.ecommerce.demo.dto.response.product.ProductDetailResponseDto;
 import com.ecommerce.demo.dto.response.product.ProductResponseDto;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
 import com.ecommerce.demo.mappers.ProductMapper;
-import com.ecommerce.demo.repositories.CategoryRepository;
-import com.ecommerce.demo.repositories.ProductRepository;
 import com.ecommerce.demo.services.ProductService;
 import com.ecommerce.demo.utils.PageableUtil;
 

@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.demo.constants.ERole;
 import com.ecommerce.demo.data.entities.AccountEntity;
+import com.ecommerce.demo.data.repositories.AccountRepository;
 import com.ecommerce.demo.dto.request.AccountUpdateDto;
 import com.ecommerce.demo.dto.response.AccountResponseDto;
 import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
-import com.ecommerce.demo.repositories.AccountRepository;
 import com.ecommerce.demo.services.AccountService;
 
 @Service

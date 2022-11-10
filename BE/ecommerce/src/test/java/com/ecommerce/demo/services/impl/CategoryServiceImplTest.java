@@ -18,11 +18,11 @@ import static org.hamcrest.Matchers.is;
 import org.modelmapper.ModelMapper;
 
 import com.ecommerce.demo.data.entities.CategoryEntity;
+import com.ecommerce.demo.data.repositories.CategoryRepository;
 import com.ecommerce.demo.dto.request.CategoryUpdateDto;
 import com.ecommerce.demo.dto.response.CategoryResponseDto;
 import com.ecommerce.demo.exceptions.ItemExistException;
 import com.ecommerce.demo.exceptions.ResourceFoundException;
-import com.ecommerce.demo.repositories.CategoryRepository;
 
 public class CategoryServiceImplTest {
 
@@ -51,25 +51,30 @@ public class CategoryServiceImplTest {
 	@Test
 	void getAllCategories_ShouldThrowResourceFoundException_WhenFindAllCategoryHasException() {
 		List<CategoryEntity> list = new ArrayList<CategoryEntity>();
+
 		when(categoryRepository.findAll()).thenReturn(list);
 
 		ResourceFoundException actualException = Assertions.assertThrows(ResourceFoundException.class,
 				() -> categoryServiceImpl.getAllCategories());
 
-		Assertions.assertEquals("Categorys Not Found", actualException.getMessage());
+		Assertions.assertEquals("Category Not Found", actualException.getMessage());
 
 	}
 
 	@Test
-	void getAllCategories_ShouldReturnListCategoryResponseDto() {
+	void getAllCategories_ShouldReturnListCategoryResponseDto_WhenDataValid() {
 		List<CategoryEntity> categoryList = new ArrayList<>();
 		List<CategoryResponseDto> expectedList = new ArrayList<>();
-
-		categoryList.add(category);
+		
+		CategoryEntity categoryActual = new CategoryEntity();
+		categoryActual.setCode("123");
+		categoryActual.setName("phone");
+		
+		categoryList.add(categoryActual);
 
 		when(categoryRepository.findAll()).thenReturn(categoryList);
 
-		when(modelMapper.map(category, CategoryResponseDto.class)).thenReturn(categoryResponseDto);
+		when(modelMapper.map(categoryList.get(0), CategoryResponseDto.class)).thenReturn(categoryResponseDto);
 
 		expectedList.add(categoryResponseDto);
 
@@ -102,15 +107,15 @@ public class CategoryServiceImplTest {
 
 		assertThat(expected, is(actual));
 	}
-	
+
 	@Test
 	void createCategory_ShouldThrowItemExistException_WhenNameIsExist() {
 		when(categoryRepository.existsByName(categoryUpdateDto.getName())).thenReturn(true);
-		
+
 		ItemExistException actual = Assertions.assertThrows(ItemExistException.class, () -> {
 			categoryServiceImpl.createCategory(categoryUpdateDto);
 		});
-		
+
 		Assertions.assertEquals("Category Name Has Exist", actual.getMessage());
 
 	}
@@ -130,42 +135,37 @@ public class CategoryServiceImplTest {
 
 		assertThat(expected, is(actual));
 	}
-	
+
 	@Test
 	void updateCategory_ResourceFoundException_WhenIdInvalid() {
 		when(categoryRepository.findById(2l)).thenReturn(Optional.empty());
-		
+
 		ResourceFoundException actual = Assertions.assertThrows(ResourceFoundException.class, () -> {
 			categoryServiceImpl.updateCategory(categoryUpdateDto, 2l);
 		});
-		
+
 		Assertions.assertEquals("Category Not Found", actual.getMessage());
 
 	}
-	
+
 	@Test
 	void updateCategory_ShouldReturnCategoryResponseDto_WhenDatavalid() {
-		
+
 		CategoryUpdateDto dto = mock(CategoryUpdateDto.class);
 		CategoryResponseDto expected = mock(CategoryResponseDto.class);
-		
+
 		when(categoryRepository.findById(2l)).thenReturn(Optional.of(category));
-		
+
 		when(categoryRepository.save(category)).thenReturn(category);
-		
+
 		when(modelMapper.map(category, CategoryResponseDto.class)).thenReturn(expected);
-		
+
 		CategoryResponseDto actual = categoryServiceImpl.updateCategory(dto, 2l);
-		
+
 		verify(dto).setId(2l);
 		verify(modelMapper).map(dto, category);
-		
-		assertThat(expected, is(actual));
 
-		
+		assertThat(expected, is(actual));
 	}
-	
-	
-	
 
 }
