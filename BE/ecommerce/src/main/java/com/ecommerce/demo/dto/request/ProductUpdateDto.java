@@ -1,5 +1,6 @@
 package com.ecommerce.demo.dto.request;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class ProductUpdateDto {
 	private Double price;
 	private String thumbnail;
 	private String categoryCode;
-	private List<String> images;
+	private List<String> images = new ArrayList<>();
 	
 	
 }

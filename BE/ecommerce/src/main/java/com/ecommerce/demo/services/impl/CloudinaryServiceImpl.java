@@ -28,6 +28,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 		if (multipartFile == null) {
 			return null;
 		}
+		@SuppressWarnings("rawtypes")
 		Map cloudinaryApi = cloudinary.uploader().upload(multipartFile.getBytes(),
 				ObjectUtils.asMap("resource_type", "auto"));
 		String url = (String) cloudinaryApi.get("secure_url");
@@ -43,6 +44,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 		}
 		List<String> urls = new ArrayList<>();
 		for (MultipartFile image : multipartFile) {
+			@SuppressWarnings("rawtypes")
 			Map cloudinaryApi = cloudinary.uploader().upload(image.getBytes(),
 					ObjectUtils.asMap("resource_type", "auto"));
 			urls.add((String) cloudinaryApi.get("secure_url"));

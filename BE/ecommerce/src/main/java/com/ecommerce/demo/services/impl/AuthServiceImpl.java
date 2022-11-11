@@ -12,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +31,22 @@ import com.ecommerce.demo.services.AuthService;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-	@Autowired
 	private AccountRepository accountRepository;
 
-	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 
-	@Autowired
 	ModelMapper modelMapper;
+
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	public AuthServiceImpl(AccountRepository accountRepository, JwtTokenProvider jwtTokenProvider,
+			ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+		this.accountRepository = accountRepository;
+		this.jwtTokenProvider = jwtTokenProvider;
+		this.modelMapper = modelMapper;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String userName) {
@@ -50,6 +57,7 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		AccountEntity account = accountOptional.get();
+
 		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
 		authorities.add(new SimpleGrantedAuthority(account.getRoleId().name()));
@@ -60,8 +68,8 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public LoginResponseDto login(LoginInputDto dto) {
-		String username = dto.getUsername();
-		Optional<AccountEntity> accountOptional = accountRepository.findByUsername(username);
+
+		Optional<AccountEntity> accountOptional = accountRepository.findByUsername(dto.getUsername());
 
 		if (accountOptional.isEmpty()) {
 			throw new ResourceFoundException("Account not found");
@@ -69,16 +77,18 @@ public class AuthServiceImpl implements AuthService {
 
 		AccountEntity account = accountOptional.get();
 
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		if (!encoder.matches(dto.getPassword(), account.getPassword())) {
-			throw new AuthenticationException("Password is incorrect");
+		// PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if (!passwordEncoder.matches(dto.getPassword(), account.getPassword())) {
+			throw new AuthenticationException("Username or Password is incorrect");
 		}
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 				account.getUsername(), account.getPassword());
+
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
 		UserDetails userDetails = loadUserByUsername(account.getUsername());
+
 		String jwt = jwtTokenProvider.generateJwtToken(userDetails);
 		Date expriredDate = jwtTokenProvider.getExpirationDate(jwt);
 
@@ -99,8 +109,8 @@ public class AuthServiceImpl implements AuthService {
 
 		AccountEntity account = modelMapper.map(dto, AccountEntity.class);
 
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		account.setPassword(encoder.encode(account.getPassword()));
+//		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		account.setPassword(passwordEncoder.encode(account.getPassword()));
 		account.setRoleId(ERole.ROLE_USER);
 
 		account.setIsActive(true);

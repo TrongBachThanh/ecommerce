@@ -62,8 +62,10 @@ public class ProductAdminServiceImplTest {
 		when(productMapper.toProductEntity(dto)).thenReturn(product);
 		when(productRepository.save(product)).thenReturn(savedProduct);
 
+//		when(dto.getImages().isEmpty()).thenReturn(false);
+
 		when(modelMapper.map(savedProduct, ProductResponseDto.class)).thenReturn(expected);
-//		when(dto.getImages().isEmpty()).thenReturn(false);		
+
 //		verify(productImageService).createProductImages(dto.getImages(), dto.getName());
 
 		ProductResponseDto actual = productAdminServiceImpl.createProduct(dto);
