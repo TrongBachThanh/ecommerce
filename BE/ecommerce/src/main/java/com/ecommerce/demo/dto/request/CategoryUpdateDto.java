@@ -13,10 +13,12 @@ public class CategoryUpdateDto {
 	private Long id;
 	private String name;
 	private String code;
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(code, id, name);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -28,9 +30,5 @@ public class CategoryUpdateDto {
 		CategoryUpdateDto other = (CategoryUpdateDto) obj;
 		return Objects.equals(code, other.code) && Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
-	
-	
-	
-	
 
 }
