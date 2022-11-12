@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecommerce.demo.services.AccountAdminService;
 
 @RestController
-@RequestMapping("api/v1/admin/account")
+@RequestMapping("api/v1/admin/accounts")
 public class AccountAdminController {
 	AccountAdminService accountAdminService;
 	

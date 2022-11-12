@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(jwtEntryPointJwt).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/v1/admin/**").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers("/customer/**").permitAll()
+				.antMatchers("/api/v1/users/**").hasAnyAuthority("ROLE_USER")
 				.antMatchers("/api/v1/products/**").permitAll()
 				.antMatchers("/api/v1/categories/**").permitAll()
 				.antMatchers("/api/v1/login").permitAll()
