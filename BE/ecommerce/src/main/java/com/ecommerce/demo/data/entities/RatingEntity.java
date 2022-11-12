@@ -6,13 +6,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "rating")
 public class RatingEntity extends BaseEntity {
@@ -20,7 +24,7 @@ public class RatingEntity extends BaseEntity {
 	private String comment;
 
 	@Column(name = "score")
-	private float score;
+	private Integer score;
 
 	@ManyToOne()
 	@JoinColumn(name = "product_id")
