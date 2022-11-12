@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -49,26 +50,46 @@ public class ProductAdminServiceImplTest {
 
 	@Test
 	void createProduct_ShouldReturnProductResponseDto_WhenDataValid() {
-		ProductUpdateDto dto = mock(ProductUpdateDto.class);
+		
+		ProductUpdateDto dto = new ProductUpdateDto();
+		dto.setCategoryCode("123");
+		
+		dto.setImages(List.of("image"));
+		
+		dto.setName("name");
+		
+		
+//		ProductUpdateDto dto = mock(ProductUpdateDto.class);
+		
+//		ProductUpdateDto dto = ProductUpdateDto.bui
 		ProductEntity product = mock(ProductEntity.class);
+		
+		
+		
 		ProductEntity savedProduct = mock(ProductEntity.class);
 		CategoryEntity category = mock(CategoryEntity.class);
 
 		ProductResponseDto expected = mock(ProductResponseDto.class);
 
-		when(productRepository.findByName(dto.getName())).thenReturn(Optional.empty());
-		when(categoryRepository.findByCode(dto.getCategoryCode())).thenReturn(Optional.of(category));
+		when(productRepository.findByName("name")).thenReturn(Optional.empty());
+		when(categoryRepository.findByCode("123")).thenReturn(Optional.of(category));
 
 		when(productMapper.toProductEntity(dto)).thenReturn(product);
+		
 		when(productRepository.save(product)).thenReturn(savedProduct);
 
 //		when(dto.getImages().isEmpty()).thenReturn(false);
 
+//		when(dto.getImages()).thenReturn(List.of("image"));
+
 		when(modelMapper.map(savedProduct, ProductResponseDto.class)).thenReturn(expected);
 
-//		verify(productImageService).createProductImages(dto.getImages(), dto.getName());
 
 		ProductResponseDto actual = productAdminServiceImpl.createProduct(dto);
+		
+		
+		verify(productImageService).createProductImages(dto.getImages(), "name");
+
 		assertThat(expected, is(actual));
 	}
 

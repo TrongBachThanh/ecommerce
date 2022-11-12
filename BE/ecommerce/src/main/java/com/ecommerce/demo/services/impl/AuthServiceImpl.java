@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.demo.constants.EAccountStatus;
 import com.ecommerce.demo.constants.ERole;
 import com.ecommerce.demo.data.entities.AccountEntity;
 import com.ecommerce.demo.data.repositories.AccountRepository;
@@ -114,6 +115,8 @@ public class AuthServiceImpl implements AuthService {
 		account.setRoleId(ERole.ROLE_USER);
 
 		account.setIsActive(true);
+		
+		account.setStatus(EAccountStatus.ACTIVE);
 
 		account.setFullName(String.join(" ", account.getFirstName(), account.getLastName()));
 

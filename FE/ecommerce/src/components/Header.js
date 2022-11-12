@@ -74,7 +74,7 @@ const Header = () => {
                 {
                   cookies.get('role') === "ROLE_USER" ? (
                     <Button className={`text-white nav-link ${darkMode ? 'text-dark-primary' : 'text-light-primary'}`}
-                      onClick={alert('Hello sign out')}>
+                      onClick={handleSignOut}>
                       Sign out
                     </Button>
 

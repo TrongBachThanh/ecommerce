@@ -1,9 +1,5 @@
 package com.ecommerce.demo.securities;
 
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,14 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(jwtEntryPointJwt).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/v1/admin/**").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers(PUT, "/products").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers(DELETE, "/products").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers(POST, "/products").hasAnyAuthority("ROLE_ADMIN")
-				.antMatchers("/order/**").hasAnyAuthority("ROLE_ADMIN")
 				.antMatchers("/customer/**").permitAll()
 				.antMatchers("/api/v1/products/**").permitAll()
+				.antMatchers("/api/v1/categories/**").permitAll()
 				.antMatchers("/api/v1/login").permitAll()
 				.antMatchers("/api/v1/register").permitAll()
+				.antMatchers("/api/v1/login").permitAll()
 				.anyRequest()
 				.authenticated();
 		httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

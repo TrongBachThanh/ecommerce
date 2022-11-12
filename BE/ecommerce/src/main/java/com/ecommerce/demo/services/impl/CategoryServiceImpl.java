@@ -44,6 +44,12 @@ public class CategoryServiceImpl implements CategoryService {
 			throw new ResourceFoundException("Category Not Found");
 		}
 		CategoryEntity category = categoryOptinal.get();
+		
+//		String a = null;
+//		System.out.println(a.length());
+		
+//		int x = 0;
+//		System.out.println(x/0);
 
 		return modelMapper.map(category, CategoryResponseDto.class);
 	}

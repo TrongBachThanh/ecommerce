@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.ecommerce.demo.constants.EAccountStatus;
 import com.ecommerce.demo.constants.ERole;
 
 import lombok.Getter;
@@ -54,6 +55,10 @@ public class AccountEntity extends BaseEntity {
 
 	@Column(name = "is_active")
 	private Boolean isActive;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "status")
+	private EAccountStatus status;
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "role_id")

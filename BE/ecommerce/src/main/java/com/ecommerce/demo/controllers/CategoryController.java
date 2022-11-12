@@ -11,7 +11,7 @@ import com.ecommerce.demo.dto.response.CategoryResponseDto;
 import com.ecommerce.demo.services.CategoryService;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 	private CategoryService categoryService;
 
@@ -19,7 +19,7 @@ public class CategoryController {
 		this.categoryService = categoryService;
 	}
 
-	@GetMapping
+	@GetMapping("/all")
 	List<CategoryResponseDto> getAllCategories() {
 		return categoryService.getAllCategories();
 	}

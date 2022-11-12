@@ -56,6 +56,7 @@ public class ProductAdminServiceImpl implements ProductAdminService {
 		if (!dto.getImages().isEmpty()) {
 			productImageService.createProductImages(dto.getImages(), dto.getName());
 		}
+		
 		return modelMapper.map(savedProduct, ProductResponseDto.class);
 	}
 
